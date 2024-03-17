@@ -24,7 +24,7 @@
     <ProjectGuid>{2a734041-5881-4ea1-bf05-46f361443af3}</ProjectGuid>
     <RootNamespace>Dll1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>mysql_mm</ProjectName>
+    <ProjectName>sql_mm</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -72,15 +72,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>mysql_mm</TargetName>
+    <TargetName>sql_mm</TargetName>
     <LibraryPath>sdk\lib\public\win64;vendor/funchook/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <OutDir>$(SolutionDir)/package/addons/mysql_mm/bin/win64/</OutDir>
+    <OutDir>$(SolutionDir)/package/addons/sql_mm/bin/win64/</OutDir>
     <IntDir>build\int\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>mysql_mm</TargetName>
+    <TargetName>sql_mm</TargetName>
     <LibraryPath>sdk\lib\public\win64;vendor/funchook/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <OutDir>$(SolutionDir)/package/addons/mysql_mm/bin/win64/</OutDir>
+    <OutDir>$(SolutionDir)/package/addons/sql_mm/bin/win64/</OutDir>
     <IntDir>build\int\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,7 +121,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;X64BITS;WIN32;COMPILER_MSVC;COMPILER_MSVC64;_CRT_NO_VA_START_VALIDATION;_ITERATOR_DEBUG_LEVEL=0;_DEBUG;mysql_mm_EXPORTS;_WINDOWS;_USRDLL;META_IS_SOURCE2;SUBHOOK_STATIC;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;X64BITS;WIN32;COMPILER_MSVC;COMPILER_MSVC64;_CRT_NO_VA_START_VALIDATION;_ITERATOR_DEBUG_LEVEL=0;_DEBUG;sql_mm_EXPORTS;_WINDOWS;_USRDLL;META_IS_SOURCE2;SUBHOOK_STATIC;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -146,7 +146,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;X64BITS;WIN32;COMPILER_MSVC;COMPILER_MSVC64;_CRT_NO_VA_START_VALIDATION;_ITERATOR_DEBUG_LEVEL=0;NDEBUG;_WINDOWS;mysql_mm_EXPORTS;_USRDLL;META_IS_SOURCE2;SUBHOOK_STATIC;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_LIMIT_MACROS;X64BITS;WIN32;COMPILER_MSVC;COMPILER_MSVC64;_CRT_NO_VA_START_VALIDATION;_ITERATOR_DEBUG_LEVEL=0;NDEBUG;_WINDOWS;sql_mm_EXPORTS;_USRDLL;META_IS_SOURCE2;SUBHOOK_STATIC;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

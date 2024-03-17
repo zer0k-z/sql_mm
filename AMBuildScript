@@ -80,17 +80,17 @@ class MMSPluginConfig(object):
     if builder.options.plugin_name is not None:
       self.plugin_name = builder.options.plugin_name
     else:
-      self.plugin_name = 'mysql_mm'
+      self.plugin_name = 'sql_mm'
 
     if builder.options.plugin_alias is not None:
       self.plugin_alias = builder.options.plugin_alias
     else:
-      self.plugin_alias = 'mysql'
+      self.plugin_alias = 'sql'
 
     if builder.options.targets:
       target_archs = builder.options.targets.split(',')
     else:
-      target_archs = ['x86', 'x86_64']
+      target_archs = ['x86_64']
 
     for arch in target_archs:
         try:
