@@ -12,6 +12,10 @@ for sdk_target in MMSPlugin.sdk_targets:
 
   binary = MMSPlugin.HL2Library(builder, cxx, MMSPlugin.plugin_name, sdk)
 
+  binary.compiler.cxxincludes += [
+    os.path.join(builder.sourcePath, 'src'),
+  ]
+
   binary.sources += [
     'src/sql_mm.cpp',
     'src/mysql/mysql_database.cpp',
@@ -23,7 +27,7 @@ for sdk_target in MMSPlugin.sdk_targets:
 
   if binary.compiler.target.platform == 'linux':
     binary.compiler.postlink += [
-      '/lib/x86_64-linux-gnu/libmysqlclient.a',
+      '/usr/lib/x86_64-linux-gnu/libmysqlclient.a',
       '-lz',
       '-lpthread',
       '-lm',
