@@ -151,7 +151,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(HL2SDKCS2)/public;$(HL2SDKCS2)/public/tier0;$(HL2SDKCS2)/game/shared;$(HL2SDKCS2)/game/server;$(HL2SDKCS2)/public/tier1;$(HL2SDKCS2)/public/mathlib;$(MMSOURCE112)/core;$(MMSOURCE112)/core/sourcehook;$(HL2SDKCS2)/public/entity2;$(HL2SDKCS2)/public/game/server;vendor/mysql/include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(HL2SDKCS2)/public;$(HL2SDKCS2)/public/tier0;$(HL2SDKCS2)/game/shared;$(HL2SDKCS2)/game/server;$(HL2SDKCS2)/public/tier1;$(HL2SDKCS2)/public/mathlib;$(MMSOURCE112)/core;$(MMSOURCE112)/core/sourcehook;$(HL2SDKCS2)/public/entity2;$(HL2SDKCS2)/public/game/server;vendor/mysql/include;$(SolutionDir)/src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -168,21 +168,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\mysql_client.cpp" />
-    <ClCompile Include="src\mysql_mm.cpp" />
-    <ClCompile Include="src\database.cpp" />
-    <ClCompile Include="src\mysql_result.cpp" />
-    <ClCompile Include="src\operations\connect.cpp" />
-    <ClCompile Include="src\operations\query.cpp" />
+    <ClCompile Include="src\mysql\mysql_client.cpp" />
+    <ClCompile Include="src\mysql\mysql_database.cpp" />
+    <ClCompile Include="src\mysql\operations\mysql_connect.cpp" />
+    <ClCompile Include="src\mysql\operations\mysql_query.cpp" />
+    <ClCompile Include="src\mysql\mysql_result.cpp" />
+    <ClCompile Include="src\sql_mm.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\mysql_client.h" />
-    <ClInclude Include="src\mysql_mm.h" />
-    <ClInclude Include="src\database.h" />
-    <ClInclude Include="src\mysql_result.h" />
-    <ClInclude Include="src\operations\connect.h" />
+    <ClInclude Include="src\common\database.h" />
+    <ClInclude Include="src\mysql\mysql_client.h" />
+    <ClInclude Include="src\mysql\mysql_database.h" />
+    <ClInclude Include="src\mysql\operations\mysql_connect.h" />
+    <ClInclude Include="src\mysql\operations\mysql_query.h" />
+    <ClInclude Include="src\mysql\mysql_result.h" />
+    <ClInclude Include="src\sql_mm.h" />
     <ClInclude Include="src\public\mysql_mm.h" />
-    <ClInclude Include="src\operations\query.h" />
+    <ClInclude Include="src\public\sql_mm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

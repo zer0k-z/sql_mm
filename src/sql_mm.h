@@ -25,7 +25,7 @@
 #include <iplayerinfo.h>
 #include <sh_vector.h>
 
-class MySQLPlugin : public ISmmPlugin, public IMetamodListener
+class SQLPlugin : public ISmmPlugin, public IMetamodListener
 {
 public:
 	bool Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late);
@@ -61,7 +61,7 @@ public:
 	const char *GetLogTag();
 };
 
-extern MySQLPlugin g_MySQLPlugin;
+extern SQLPlugin g_SQLPlugin;
 
 PLUGIN_GLOBALVARS();
 

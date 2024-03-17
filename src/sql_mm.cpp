@@ -26,14 +26,15 @@
 #include <mysql/mysql.h>
 #endif
 
-#include "mysql_mm.h"
+#include "sql_mm.h"
 #include "iserver.h"
-#include "database.h"
-#include "mysql_client.h"
+
+#include "mysql/mysql_database.h"
+#include "mysql/mysql_client.h"
 
 SH_DECL_HOOK3_void(IServerGameDLL, GameFrame, SH_NOATTRIB, 0, bool, bool, bool);
 
-MySQLPlugin g_MySQLPlugin;
+SQLPlugin g_SQLPlugin;
 IServerGameDLL *server = nullptr;
 IVEngineServer *engine = nullptr;
 IMySQLClient* g_mysqlClient = nullptr;
@@ -52,8 +53,8 @@ CGlobalVars *GetGameGlobals()
 	return g_pNetworkServerService->GetIGameServer()->GetGlobals();
 }
 
-PLUGIN_EXPOSE(MySQLPlugin, g_MySQLPlugin);
-bool MySQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
+PLUGIN_EXPOSE(SQLPlugin, g_SQLPlugin);
+bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
 	PLUGIN_SAVEVARS();
 
@@ -66,7 +67,7 @@ bool MySQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, b
 
 	META_CONPRINTF( "Starting plugin.\n" );
 
-	SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &MySQLPlugin::Hook_GameFrame, true);
+	SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &SQLPlugin::Hook_GameFrame, true);
 
 	if (mysql_library_init(0, NULL, NULL))
 	{
@@ -87,7 +88,7 @@ bool MySQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, b
 		{
 			ConMsg("CONNECTED\n");
 
-			g_mysql->Query("SELECT * FROM test1 WHERE test = '%s'", [g_mysql](IMySQLQuery* test)
+			g_mysql->Query("SELECT * FROM test1 WHERE test = '%s'", [g_mysql](ISQLQuery* test)
 			{
 				auto results = test->GetResultSet();
 				ConMsg("Callback rows %i\n", results->GetRowCount());
@@ -111,7 +112,7 @@ bool MySQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, b
 	return true;
 }
 
-bool MySQLPlugin::Unload(char *error, size_t maxlen)
+bool SQLPlugin::Unload(char *error, size_t maxlen)
 {
 	mysql_library_end();
 
@@ -120,13 +121,13 @@ bool MySQLPlugin::Unload(char *error, size_t maxlen)
 	return true;
 }
 
-void MySQLPlugin::AllPluginsLoaded()
+void SQLPlugin::AllPluginsLoaded()
 {
 	
 
 }
 
-void* MySQLPlugin::OnMetamodQuery(const char* iface, int* ret)
+void* SQLPlugin::OnMetamodQuery(const char* iface, int* ret)
 {
 	if (!strcmp(iface, MYSQLMM_INTERFACE))
 	{
@@ -138,7 +139,7 @@ void* MySQLPlugin::OnMetamodQuery(const char* iface, int* ret)
 	return nullptr;
 }
 
-void MySQLPlugin::Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTick )
+void SQLPlugin::Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTick )
 {
 	/**
 	 * simulating:
@@ -153,7 +154,7 @@ void MySQLPlugin::Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTi
 	}
 }
 
-void MySQLPlugin::OnLevelInit( char const *pMapName,
+void SQLPlugin::OnLevelInit( char const *pMapName,
 									 char const *pMapEntities,
 									 char const *pOldLevel,
 									 char const *pLandmarkName,
@@ -162,56 +163,56 @@ void MySQLPlugin::OnLevelInit( char const *pMapName,
 {
 }
 
-void MySQLPlugin::OnLevelShutdown()
+void SQLPlugin::OnLevelShutdown()
 {
 }
 
-bool MySQLPlugin::Pause(char *error, size_t maxlen)
-{
-	return true;
-}
-
-bool MySQLPlugin::Unpause(char *error, size_t maxlen)
+bool SQLPlugin::Pause(char *error, size_t maxlen)
 {
 	return true;
 }
 
-const char *MySQLPlugin::GetLicense()
+bool SQLPlugin::Unpause(char *error, size_t maxlen)
+{
+	return true;
+}
+
+const char *SQLPlugin::GetLicense()
 {
 	return "GPLv3";
 }
 
-const char *MySQLPlugin::GetVersion()
+const char *SQLPlugin::GetVersion()
 {
 	return "1.0.0.0";
 }
 
-const char *MySQLPlugin::GetDate()
+const char *SQLPlugin::GetDate()
 {
 	return __DATE__;
 }
 
-const char *MySQLPlugin::GetLogTag()
+const char *SQLPlugin::GetLogTag()
 {
 	return "MYSQLMM";
 }
 
-const char *MySQLPlugin::GetAuthor()
+const char *SQLPlugin::GetAuthor()
 {
 	return "Poggu";
 }
 
-const char *MySQLPlugin::GetDescription()
+const char *SQLPlugin::GetDescription()
 {
 	return "Exposes MySQL connectivity";
 }
 
-const char *MySQLPlugin::GetName()
+const char *SQLPlugin::GetName()
 {
 	return "MysqlMM";
 }
 
-const char *MySQLPlugin::GetURL()
+const char *SQLPlugin::GetURL()
 {
 	return "https://poggu.me";
 }

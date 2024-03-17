@@ -83,7 +83,7 @@ bool CMySQLResult::MoreRows()
 	return m_CurRow < m_RowCount;
 }
 
-IMySQLRow* CMySQLResult::FetchRow()
+ISQLRow* CMySQLResult::FetchRow()
 {
 	if (m_CurRow >= m_RowCount)
 	{
@@ -97,7 +97,7 @@ IMySQLRow* CMySQLResult::FetchRow()
 	return this;
 }
 
-IMySQLRow* CMySQLResult::CurrentRow()
+ISQLRow* CMySQLResult::CurrentRow()
 {
 	if (!m_pRes
 		|| !m_CurRow
@@ -116,7 +116,7 @@ bool CMySQLResult::Rewind()
 	return true;
 }
 
-EMySQLType CMySQLResult::GetFieldType(unsigned int field)
+int CMySQLResult::GetFieldType(unsigned int field)
 {
 	if (field >= m_ColCount)
 	{
@@ -129,7 +129,7 @@ EMySQLType CMySQLResult::GetFieldType(unsigned int field)
 		return MM_MYSQL_TYPE_UNKNOWN;
 	}
 
-	return (EMySQLType)fld->type;
+	return fld->type;
 }
 
 bool CMySQLResult::IsNull(unsigned int columnId)
@@ -204,7 +204,7 @@ CMySQLQuery::CMySQLQuery(MySQLConnection* db, MYSQL_RES* res) : m_pDatabase(db),
 	m_affectedRows = m_pDatabase->GetAffectedRows();
 }
 
-IMySQLResult* CMySQLQuery::GetResultSet()
+ISQLResult* CMySQLQuery::GetResultSet()
 {
 	if (m_res.m_pRes == NULL)
 	{

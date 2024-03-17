@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include "database.h"
+#include "mysql_database.h"
 #include "public/mysql_mm.h"
 
 class MySQLConnection;
 class CMySQLQuery;
 
-class CMySQLResult : public IMySQLResult, IMySQLRow
+class CMySQLResult : public ISQLResult, ISQLRow
 {
 	friend class CMySQLQuery;
 public:
@@ -40,10 +40,10 @@ public:
 	bool FieldNameToNum(const char* name, unsigned int* columnId);
 	const char* FieldNumToName(unsigned int colId);
 	bool MoreRows();
-	IMySQLRow* FetchRow();
-	IMySQLRow* CurrentRow();
+	ISQLRow* FetchRow();
+	ISQLRow* CurrentRow();
 	bool Rewind();
-	EMySQLType GetFieldType(unsigned int field);
+	int GetFieldType(unsigned int field);
 	char* GetString(unsigned int columnId, size_t* length = nullptr);
 	size_t GetDataSize(unsigned int columnId);
 	float GetFloat(unsigned int columnId);
@@ -61,13 +61,13 @@ private:
 	unsigned long* m_Lengths = 0;
 };
 
-class CMySQLQuery : public IMySQLQuery
+class CMySQLQuery : public ISQLQuery
 {
 	friend class CMySQLResult;
 public:
 	CMySQLQuery(MySQLConnection* db, MYSQL_RES* res);
 	~CMySQLQuery();
-	IMySQLResult* GetResultSet();
+	ISQLResult* GetResultSet();
 	bool FetchMoreResults();
 	unsigned int GetInsertId();
 	unsigned int GetAffectedRows();

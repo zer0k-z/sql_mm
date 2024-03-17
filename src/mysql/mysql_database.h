@@ -30,17 +30,8 @@
 #include <thread>
 #include <condition_variable>
 #include <functional>
+#include "common/database.h"
 #include "public/mysql_mm.h"
-
-class ThreadOperation
-{
-public:
-    virtual void RunThreadPart() = 0;
-    virtual void CancelThinkPart() = 0;
-    virtual void RunThinkPart() = 0;
-private:
-};
-
 
 class MySQLConnection : public IMySQLConnection
 {

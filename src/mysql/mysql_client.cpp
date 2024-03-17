@@ -18,7 +18,7 @@
  */
 
 #include "mysql_client.h"
-#include "database.h"
+#include "mysql_database.h"
 #include "tier0/dbg.h"
 
 extern std::vector<MySQLConnection*> g_vecMysqlConnections;

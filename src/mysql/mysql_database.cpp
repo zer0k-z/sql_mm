@@ -19,11 +19,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "database.h"
+#include "mysql_database.h"
 #include "tier0/dbg.h"
 
-#include "operations/connect.h"
-#include "operations/query.h"
+#include "operations/mysql_connect.h"
+#include "operations/mysql_query.h"
 #include <cstdarg>
 
 extern std::vector<MySQLConnection*> g_vecMysqlConnections;
@@ -64,7 +64,7 @@ MySQLConnection::~MySQLConnection()
 
 void MySQLConnection::Connect(ConnectCallbackFunc callback)
 {
-    TConnectOp* op = new TConnectOp(this, callback);
+    TMySQLConnectOp* op = new TMySQLConnectOp(this, callback);
 
     AddToThreadQueue(op);
 }
@@ -77,7 +77,7 @@ void MySQLConnection::Query(char* query, QueryCallbackFunc callback)
         return;
     }
 
-    TQueryOp* op = new TQueryOp(this, std::string(query), callback);
+    TMySQLQueryOp* op = new TMySQLQueryOp(this, std::string(query), callback);
 
     AddToThreadQueue(op);
 }
@@ -102,7 +102,7 @@ void MySQLConnection::Query(const char* query, QueryCallbackFunc callback, ...)
         return;
     }
 
-    TQueryOp* op = new TQueryOp(this, std::string(zc.data(), zc.size()), callback);
+    TMySQLQueryOp* op = new TMySQLQueryOp(this, std::string(zc.data(), zc.size()), callback);
 
     AddToThreadQueue(op);
 }

@@ -20,27 +20,22 @@
  */
 
 #pragma once
-#include "../database.h"
-#include "../mysql_result.h"
+#include "../mysql_database.h"
 
-class TQueryOp : public ThreadOperation
+class TMySQLConnectOp : public ThreadOperation
 {
 public:
-	TQueryOp(MySQLConnection* con, std::string query, QueryCallbackFunc func) : m_pCon(con), m_szQuery(query), m_callback(func)
+	TMySQLConnectOp(MySQLConnection* con, ConnectCallbackFunc func) : m_pCon(con), m_callback(func)
 	{
 
 	}
-
-	~TQueryOp();
 
 	void RunThreadPart();
 	void CancelThinkPart();
 	void RunThinkPart();
 private:
 	MySQLConnection* m_pCon;
-	std::string m_szQuery;
-	QueryCallbackFunc m_callback;
-	MYSQL_RES* m_res = nullptr;
-	CMySQLQuery* m_pQuery = nullptr;
+	ConnectCallbackFunc m_callback;
+	MYSQL* m_pDatabase = nullptr;
 	char m_szError[255];
 };

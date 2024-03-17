@@ -19,16 +19,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "query.h"
+#include "mysql_query.h"
 #include "tier0/dbg.h"
 #include "../mysql_result.h"
 
-TQueryOp::~TQueryOp()
+TMySQLQueryOp::~TMySQLQueryOp()
 {
 	delete m_pQuery;
 }
 
-void TQueryOp::RunThreadPart()
+void TMySQLQueryOp::RunThreadPart()
 {
 	auto pDatabase = m_pCon->GetDatabase();
 	m_szError[0] = '\0';
@@ -42,7 +42,7 @@ void TQueryOp::RunThreadPart()
 		m_res = mysql_store_result(pDatabase);
 }
 
-void TQueryOp::RunThinkPart()
+void TMySQLQueryOp::RunThinkPart()
 {
 	if(m_szError[0])
 	{
@@ -54,7 +54,7 @@ void TQueryOp::RunThinkPart()
 	m_callback(m_pQuery);
 }
 
-void TQueryOp::CancelThinkPart()
+void TMySQLQueryOp::CancelThinkPart()
 {
 	mysql_close(m_pCon->GetDatabase());
 	m_pCon->SetDatabase(nullptr);

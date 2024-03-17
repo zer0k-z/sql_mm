@@ -9,57 +9,78 @@
       <UniqueIdentifier>{70725d9f-1e21-48d9-ad02-3bbc3c826268}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
-    <Filter Include="Source Files\operations">
-      <UniqueIdentifier>{650d8361-965b-4380-b410-e2c906add745}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\operations">
-      <UniqueIdentifier>{fe6c97b0-5e88-42d9-b12f-1fa8063e23b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\public">
       <UniqueIdentifier>{f36eabff-4948-4353-89ad-aeb51afc3efc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\mysql">
+      <UniqueIdentifier>{e2abaf38-5382-4598-98f9-04da4261f081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\mysql\operations">
+      <UniqueIdentifier>{1b18719a-2da0-495c-94f0-e3cfb20d9029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sqlite">
+      <UniqueIdentifier>{576c9aec-f132-470a-a495-761da06e7c39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sqlite\operations">
+      <UniqueIdentifier>{0335b8a9-9123-4af8-8ec6-0ac74e44fbe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mysql">
+      <UniqueIdentifier>{f7385bce-ba8b-4689-8671-f7434505d70e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mysql\operations">
+      <UniqueIdentifier>{2b3c9f5c-fc75-4238-bbac-eb35988355cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common">
+      <UniqueIdentifier>{91e30891-32cb-4865-a977-bbe9df6783d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\mysql_mm.cpp">
+    <ClCompile Include="src\sql_mm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\database.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\mysql\mysql_client.cpp">
+      <Filter>Source Files\mysql</Filter>
     </ClCompile>
-    <ClCompile Include="src\operations\connect.cpp">
-      <Filter>Source Files\operations</Filter>
+    <ClCompile Include="src\mysql\mysql_database.cpp">
+      <Filter>Source Files\mysql</Filter>
     </ClCompile>
-    <ClCompile Include="src\operations\query.cpp">
-      <Filter>Source Files\operations</Filter>
+    <ClCompile Include="src\mysql\mysql_result.cpp">
+      <Filter>Source Files\mysql</Filter>
     </ClCompile>
-    <ClCompile Include="src\mysql_result.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\mysql\operations\mysql_query.cpp">
+      <Filter>Source Files\mysql\operations</Filter>
     </ClCompile>
-    <ClCompile Include="src\mysql_client.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\mysql\operations\mysql_connect.cpp">
+      <Filter>Source Files\mysql\operations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\mysql_mm.h">
+    <ClInclude Include="src\sql_mm.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\database.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\operations\connect.h">
-      <Filter>Header Files\operations</Filter>
-    </ClInclude>
-    <ClInclude Include="src\operations\query.h">
-      <Filter>Header Files\operations</Filter>
     </ClInclude>
     <ClInclude Include="src\public\mysql_mm.h">
       <Filter>Header Files\public</Filter>
     </ClInclude>
-    <ClInclude Include="src\mysql_result.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\public\sql_mm.h">
+      <Filter>Header Files\public</Filter>
     </ClInclude>
-    <ClInclude Include="src\mysql_client.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\mysql\mysql_client.h">
+      <Filter>Header Files\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mysql\mysql_database.h">
+      <Filter>Header Files\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mysql\mysql_result.h">
+      <Filter>Header Files\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mysql\operations\mysql_connect.h">
+      <Filter>Header Files\mysql\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mysql\operations\mysql_query.h">
+      <Filter>Header Files\mysql\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\database.h">
+      <Filter>Header Files\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

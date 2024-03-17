@@ -19,10 +19,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "connect.h"
+#include "mysql_connect.h"
 #include "tier0/dbg.h"
 
-void TConnectOp::RunThreadPart()
+void TMySQLConnectOp::RunThreadPart()
 {
 	m_szError[0] = '\0';
 	MYSQL* mysql = mysql_init(NULL);
@@ -70,7 +70,7 @@ void TConnectOp::RunThreadPart()
 	m_pDatabase = mysql;
 }
 
-void TConnectOp::RunThinkPart()
+void TMySQLConnectOp::RunThinkPart()
 {
 	if (m_szError[0])
 		ConMsg("Failed to establish a MySQL connection: %s\n", m_szError);
@@ -79,7 +79,7 @@ void TConnectOp::RunThinkPart()
 	m_callback(m_pDatabase != nullptr);
 }
 
-void TConnectOp::CancelThinkPart()
+void TMySQLConnectOp::CancelThinkPart()
 {
 	mysql_close(m_pDatabase);
 	m_pCon->SetDatabase(nullptr);
