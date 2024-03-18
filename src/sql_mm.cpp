@@ -1,22 +1,3 @@
-/**
- * =============================================================================
- * CS2Fixes
- * Copyright (C) 2023 Source2ZE
- * =============================================================================
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, version 3.0, as published by the
- * Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include <stdio.h>
 
 #ifdef WIN32
@@ -29,6 +10,8 @@
 #include "sql_mm.h"
 #include "iserver.h"
 
+#include "common/interface.h"
+
 #include "mysql/mysql_database.h"
 #include "mysql/mysql_client.h"
 
@@ -37,9 +20,14 @@ SH_DECL_HOOK3_void(IServerGameDLL, GameFrame, SH_NOATTRIB, 0, bool, bool, bool);
 SQLPlugin g_SQLPlugin;
 IServerGameDLL *server = nullptr;
 IVEngineServer *engine = nullptr;
-IMySQLClient* g_mysqlClient = nullptr;
+ISQLInterface *g_sqlInterface = nullptr;
 
+// MySQL
+IMySQLClient* g_mysqlClient = nullptr;
 std::vector<MySQLConnection*> g_vecMysqlConnections;
+
+// SQLite
+ISQLiteClient* g_sqliteClient = nullptr;
 
 // Should only be called within the active game loop (i e map should be loaded and active)
 // otherwise that'll be nullptr!
@@ -77,38 +65,6 @@ bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, boo
 
 	g_mysqlClient = new CMySQLClient();
 
-	// Test connection without interface
-
-#if 0
-	MySQLConnectionInfo info{.host="test", .user="test", .pass="test", .database="test"};
-	auto g_mysql = g_mysqlClient->CreateMySQLConnection(info);
-
-	g_mysql->Connect([g_mysql](bool connect) {
-		if (connect)
-		{
-			ConMsg("CONNECTED\n");
-
-			g_mysql->Query("SELECT * FROM test1 WHERE test = '%s'", [g_mysql](ISQLQuery* test)
-			{
-				auto results = test->GetResultSet();
-				ConMsg("Callback rows %i\n", results->GetRowCount());
-				while (results->FetchRow())
-				{
-					ConMsg("ID: %i, str: %s\n", results->GetInt(0), results->GetString(1));
-				}
-				g_mysql->Destroy(); // Expected life cycle of a mysql connection is starting in plugin start and ending in plugin end, ideally don't do this
-				delete g_mysql;
-			}, g_mysql->Escape("te\"st").c_str());
-		}
-		else
-		{
-			ConMsg("Failed to connect\n");
-			g_mysql->Destroy();
-			delete g_mysql;
-		}
-	});
-#endif
-
 	return true;
 }
 
@@ -117,22 +73,17 @@ bool SQLPlugin::Unload(char *error, size_t maxlen)
 	mysql_library_end();
 
 	delete g_mysqlClient;
-
+	delete g_sqliteClient;
+	delete g_sqlInterface;
 	return true;
-}
-
-void SQLPlugin::AllPluginsLoaded()
-{
-	
-
 }
 
 void* SQLPlugin::OnMetamodQuery(const char* iface, int* ret)
 {
-	if (!strcmp(iface, MYSQLMM_INTERFACE))
+	if (!strcmp(iface, SQLMM_INTERFACE))
 	{
 		*ret = META_IFACE_OK;
-		return g_mysqlClient;
+		return g_sqlInterface;
 	}
 
 	*ret = META_IFACE_FAILED;
@@ -154,29 +105,6 @@ void SQLPlugin::Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTick
 	}
 }
 
-void SQLPlugin::OnLevelInit( char const *pMapName,
-									 char const *pMapEntities,
-									 char const *pOldLevel,
-									 char const *pLandmarkName,
-									 bool loadGame,
-									 bool background )
-{
-}
-
-void SQLPlugin::OnLevelShutdown()
-{
-}
-
-bool SQLPlugin::Pause(char *error, size_t maxlen)
-{
-	return true;
-}
-
-bool SQLPlugin::Unpause(char *error, size_t maxlen)
-{
-	return true;
-}
-
 const char *SQLPlugin::GetLicense()
 {
 	return "GPLv3";
@@ -194,25 +122,35 @@ const char *SQLPlugin::GetDate()
 
 const char *SQLPlugin::GetLogTag()
 {
-	return "MYSQLMM";
+	return "SQLMM";
 }
 
 const char *SQLPlugin::GetAuthor()
 {
-	return "Poggu";
+	return "Poggu, zer0.k";
 }
 
 const char *SQLPlugin::GetDescription()
 {
-	return "Exposes MySQL connectivity";
+	return "Exposes SQL connectivity";
 }
 
 const char *SQLPlugin::GetName()
 {
-	return "MysqlMM";
+	return "SQLMM";
 }
 
 const char *SQLPlugin::GetURL()
 {
 	return "https://poggu.me";
+}
+
+IMySQLClient *SQLInterface::GetMySQLClient()
+{
+	return g_mysqlClient;
+}
+
+ISQLiteClient *SQLInterface::GetSQLiteClient()
+{
+	return g_sqliteClient;
 }

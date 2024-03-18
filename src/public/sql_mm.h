@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 
+#define SQLMM_INTERFACE "SQLInterface"
 
 class ISQLQuery;
 
@@ -51,4 +52,14 @@ public:
 	virtual void Destroy() = 0;
 	virtual std::string Escape(char *string) = 0;
 	virtual std::string Escape(const char *string) = 0;
+};
+
+class IMySQLClient;
+class ISQLiteClient;
+
+class ISQLInterface
+{
+public:
+	virtual IMySQLClient *GetMySQLClient() = 0;
+	virtual ISQLiteClient *GetSQLiteClient() = 0;
 };

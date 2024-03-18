@@ -23,7 +23,6 @@
 
 #include "sql_mm.h"
 
-#define MYSQLMM_INTERFACE "IMySQLClient"
 
 typedef enum EMySQLType
 {

@@ -33,6 +33,24 @@
     <Filter Include="Header Files\common">
       <UniqueIdentifier>{91e30891-32cb-4865-a977-bbe9df6783d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\sqlite">
+      <UniqueIdentifier>{c8ad81e9-769f-494d-8da0-bf0648522816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sqlite\operations">
+      <UniqueIdentifier>{962d7ede-27a0-41ae-ad88-d5f41bf93385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vendor">
+      <UniqueIdentifier>{3d04020a-6c96-42b4-9613-dffb4eb738c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vendor\sqlite-source">
+      <UniqueIdentifier>{635584c7-da2f-42aa-a702-dfd3a2d5e304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\vendor">
+      <UniqueIdentifier>{0a18baa5-94e7-4d50-a0b2-319e92bce08f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\vendor\sqlite-source">
+      <UniqueIdentifier>{92beaf78-ef71-4b5f-a7a2-51f42ac199d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sql_mm.cpp">
@@ -52,6 +70,27 @@
     </ClCompile>
     <ClCompile Include="src\mysql\operations\mysql_connect.cpp">
       <Filter>Source Files\mysql\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\sqlite_database.cpp">
+      <Filter>Source Files\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\sqlite_result.cpp">
+      <Filter>Source Files\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\sqlite_client.cpp">
+      <Filter>Source Files\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\operations\sqlite_connectop.cpp">
+      <Filter>Source Files\sqlite\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\operations\sqlite_queryop.cpp">
+      <Filter>Source Files\sqlite\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\sqlite-source\sqlite3.c">
+      <Filter>Source Files\vendor\sqlite-source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\sqlite_query.cpp">
+      <Filter>Source Files\sqlite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +120,36 @@
     </ClInclude>
     <ClInclude Include="src\common\database.h">
       <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\interface.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\operations\sqlite_connectop.h">
+      <Filter>Header Files\sqlite\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\operations\sqlite_queryop.h">
+      <Filter>Header Files\sqlite\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\sqlite_database.h">
+      <Filter>Header Files\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\sqlite_result.h">
+      <Filter>Header Files\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\sqlite_client.h">
+      <Filter>Header Files\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\sqlite-source\sqlite3.h">
+      <Filter>Header Files\vendor\sqlite-source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\memtable.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\sqlite_query.h">
+      <Filter>Header Files\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\public\sqlite_mm.h">
+      <Filter>Header Files\public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

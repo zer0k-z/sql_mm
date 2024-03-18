@@ -173,18 +173,35 @@
     <ClCompile Include="src\mysql\operations\mysql_connect.cpp" />
     <ClCompile Include="src\mysql\operations\mysql_query.cpp" />
     <ClCompile Include="src\mysql\mysql_result.cpp" />
+    <ClCompile Include="src\sqlite\operations\sqlite_connectop.cpp" />
+    <ClCompile Include="src\sqlite\operations\sqlite_queryop.cpp" />
+    <ClCompile Include="src\sqlite\sqlite_client.cpp" />
+    <ClCompile Include="src\sqlite\sqlite_database.cpp" />
+    <ClCompile Include="src\sqlite\sqlite_query.cpp" />
+    <ClCompile Include="src\sqlite\sqlite_result.cpp" />
     <ClCompile Include="src\sql_mm.cpp" />
+    <ClCompile Include="vendor\sqlite-source\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\database.h" />
+    <ClInclude Include="src\common\interface.h" />
+    <ClInclude Include="src\common\memtable.h" />
     <ClInclude Include="src\mysql\mysql_client.h" />
     <ClInclude Include="src\mysql\mysql_database.h" />
     <ClInclude Include="src\mysql\operations\mysql_connect.h" />
     <ClInclude Include="src\mysql\operations\mysql_query.h" />
     <ClInclude Include="src\mysql\mysql_result.h" />
+    <ClInclude Include="src\public\sqlite_mm.h" />
+    <ClInclude Include="src\sqlite\operations\sqlite_connectop.h" />
+    <ClInclude Include="src\sqlite\operations\sqlite_queryop.h" />
+    <ClInclude Include="src\sqlite\sqlite_client.h" />
+    <ClInclude Include="src\sqlite\sqlite_database.h" />
+    <ClInclude Include="src\sqlite\sqlite_query.h" />
+    <ClInclude Include="src\sqlite\sqlite_result.h" />
     <ClInclude Include="src\sql_mm.h" />
     <ClInclude Include="src\public\mysql_mm.h" />
     <ClInclude Include="src\public\sql_mm.h" />
+    <ClInclude Include="vendor\sqlite-source\sqlite3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
