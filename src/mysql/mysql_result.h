@@ -29,51 +29,54 @@ class CMySQLQuery;
 
 class CMySQLResult : public ISQLResult, ISQLRow
 {
-	friend class CMySQLQuery;
+    friend class CMySQLQuery;
+
 public:
-	CMySQLResult(MYSQL_RES* res);
+    CMySQLResult(MYSQL_RES *res);
 
-	void Update();
+    void Update();
 
-	int GetRowCount();
-	int GetFieldCount();
-	bool FieldNameToNum(const char* name, unsigned int* columnId);
-	const char* FieldNumToName(unsigned int colId);
-	bool MoreRows();
-	ISQLRow* FetchRow();
-	ISQLRow* CurrentRow();
-	bool Rewind();
-	int GetFieldType(unsigned int field);
-	const char* GetString(unsigned int columnId, size_t* length = nullptr);
-	size_t GetDataSize(unsigned int columnId);
-	float GetFloat(unsigned int columnId);
-	int GetInt(unsigned int columnId);
-	bool IsNull(unsigned int columnId);
+    int GetRowCount();
+    int GetFieldCount();
+    bool FieldNameToNum(const char *name, unsigned int *columnId);
+    const char *FieldNumToName(unsigned int colId);
+    bool MoreRows();
+    ISQLRow *FetchRow();
+    ISQLRow *CurrentRow();
+    bool Rewind();
+    int GetFieldType(unsigned int field);
+    const char *GetString(unsigned int columnId, size_t *length = nullptr);
+    size_t GetDataSize(unsigned int columnId);
+    float GetFloat(unsigned int columnId);
+    int GetInt(unsigned int columnId);
+    bool IsNull(unsigned int columnId);
 
 private:
-	//MYSQL* m_pDatabase;
-	MYSQL_RES* m_pRes;
+    // MYSQL* m_pDatabase;
+    MYSQL_RES *m_pRes;
 
-	unsigned int m_ColCount = 0;
-	unsigned int m_RowCount = 0;
-	unsigned int m_CurRow = 0;
-	MYSQL_ROW m_Row;
-	unsigned long* m_Lengths = 0;
+    unsigned int m_ColCount = 0;
+    unsigned int m_RowCount = 0;
+    unsigned int m_CurRow = 0;
+    MYSQL_ROW m_Row;
+    unsigned long *m_Lengths = 0;
 };
 
 class CMySQLQuery : public ISQLQuery
 {
-	friend class CMySQLResult;
+    friend class CMySQLResult;
+
 public:
-	CMySQLQuery(MySQLConnection* db, MYSQL_RES* res);
-	~CMySQLQuery();
-	ISQLResult* GetResultSet();
-	bool FetchMoreResults();
-	unsigned int GetInsertId();
-	unsigned int GetAffectedRows();
+    CMySQLQuery(MySQLConnection *db, MYSQL_RES *res);
+    ~CMySQLQuery();
+    ISQLResult *GetResultSet();
+    bool FetchMoreResults();
+    unsigned int GetInsertId();
+    unsigned int GetAffectedRows();
+
 private:
-	MySQLConnection* m_pDatabase;
-	CMySQLResult m_res;
-	unsigned int m_insertId;
-	unsigned int m_affectedRows;
+    MySQLConnection *m_pDatabase;
+    CMySQLResult m_res;
+    unsigned int m_insertId;
+    unsigned int m_affectedRows;
 };

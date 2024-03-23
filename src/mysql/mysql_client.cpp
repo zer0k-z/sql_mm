@@ -21,12 +21,12 @@
 #include "mysql_database.h"
 #include "tier0/dbg.h"
 
-extern std::vector<MySQLConnection*> g_vecMysqlConnections;
+extern std::vector<MySQLConnection *> g_vecMysqlConnections;
 
-IMySQLConnection* CMySQLClient::CreateMySQLConnection(MySQLConnectionInfo info)
+IMySQLConnection *CMySQLClient::CreateMySQLConnection(MySQLConnectionInfo info)
 {
-	auto connection = new MySQLConnection(info);
-	g_vecMysqlConnections.push_back(connection);
+    auto connection = new MySQLConnection(info);
+    g_vecMysqlConnections.push_back(connection);
 
-	return connection;
+    return connection;
 }

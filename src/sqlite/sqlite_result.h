@@ -9,51 +9,62 @@ class SqQuery;
 
 struct SqField
 {
-	int type;
-	union
-	{
-		int idx;
-		float f;
-	} u;
-	size_t size;
+    int type;
+
+    union
+    {
+        int idx;
+        float f;
+    } u;
+
+    size_t size;
 };
 
 class SqResults : public ISQLResult, ISQLRow
 {
-	friend class SqQuery;
-public:
-	SqResults(SqQuery *query);
-	~SqResults();
-public: //IResultSet
-	int GetRowCount();
-	int GetFieldCount();
-	const char *FieldNumToName(unsigned int columnId);
-	bool FieldNameToNum(const char *name, unsigned int *columnId);
-	bool MoreRows();
-	ISQLRow *FetchRow();
-	ISQLRow *CurrentRow();
-	bool Rewind();
-public: //IResultRow
-	int GetFieldType(unsigned int field) { return 0; }
-	const char *GetString(unsigned int columnId, size_t *length = nullptr);
-	size_t GetDataSize(unsigned int columnId);
-	float GetFloat(unsigned int columnId);
-	int GetInt(unsigned int columnId);
-	bool IsNull(unsigned int columnId);
+    friend class SqQuery;
 
-	void ResetResultCount();
-	void PushResult();
+public:
+    SqResults(SqQuery *query);
+    ~SqResults();
+
+public: // IResultSet
+    int GetRowCount();
+    int GetFieldCount();
+    const char *FieldNumToName(unsigned int columnId);
+    bool FieldNameToNum(const char *name, unsigned int *columnId);
+    bool MoreRows();
+    ISQLRow *FetchRow();
+    ISQLRow *CurrentRow();
+    bool Rewind();
+
+public: // IResultRow
+    int GetFieldType(unsigned int field)
+    {
+        return 0;
+    }
+
+    const char *GetString(unsigned int columnId, size_t *length = nullptr);
+    size_t GetDataSize(unsigned int columnId);
+    float GetFloat(unsigned int columnId);
+    int GetInt(unsigned int columnId);
+    bool IsNull(unsigned int columnId);
+
+    void ResetResultCount();
+    void PushResult();
+
 private:
-	SqField *GetField(unsigned int col);
+    SqField *GetField(unsigned int col);
+
 private:
-	sqlite3_stmt *m_pStmt;		/** DOES NOT CHANGE */
-	std::string *m_ColNames;			/** DOES NOT CHANGE */
-	unsigned int m_ColCount;	/** DOES NOT CHANGE */
-	BaseStringTable m_Strings;	/** DOES NOT CHANGE */
-	BaseMemTable *m_pMemory;	/** DOES NOT CHANGE */
-	int m_RowCount;
-	int m_MaxRows;
-	SqField *m_Rows;
-	int m_CurRow;
-	int m_NextRow;
+    sqlite3_stmt *m_pStmt;     /** DOES NOT CHANGE */
+    std::string *m_ColNames;   /** DOES NOT CHANGE */
+    unsigned int m_ColCount;   /** DOES NOT CHANGE */
+    BaseStringTable m_Strings; /** DOES NOT CHANGE */
+    BaseMemTable *m_pMemory;   /** DOES NOT CHANGE */
+    int m_RowCount;
+    int m_MaxRows;
+    SqField *m_Rows;
+    int m_CurRow;
+    int m_NextRow;
 };

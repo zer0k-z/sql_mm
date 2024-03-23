@@ -24,169 +24,173 @@ IVEngineServer *engine = nullptr;
 ISQLInterface *g_sqlInterface = nullptr;
 
 // MySQL
-IMySQLClient* g_mysqlClient = nullptr;
-std::vector<MySQLConnection*> g_vecMysqlConnections;
+IMySQLClient *g_mysqlClient = nullptr;
+std::vector<MySQLConnection *> g_vecMysqlConnections;
 
 // SQLite
-ISQLiteClient* g_sqliteClient = nullptr;
+ISQLiteClient *g_sqliteClient = nullptr;
 std::vector<SqConnection *> g_vecSqliteConnections;
 
 // Should only be called within the active game loop (i e map should be loaded and active)
 // otherwise that'll be nullptr!
 CGlobalVars *GetGameGlobals()
 {
-	INetworkGameServer *server = g_pNetworkServerService->GetIGameServer();
+    INetworkGameServer *server = g_pNetworkServerService->GetIGameServer();
 
-	if(!server)
-		return nullptr;
+    if (!server)
+    {
+        return nullptr;
+    }
 
-	return g_pNetworkServerService->GetIGameServer()->GetGlobals();
+    return g_pNetworkServerService->GetIGameServer()->GetGlobals();
 }
 
 PLUGIN_EXPOSE(SQLPlugin, g_SQLPlugin);
+
 bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
-	PLUGIN_SAVEVARS();
+    PLUGIN_SAVEVARS();
 
-	GET_V_IFACE_CURRENT(GetEngineFactory, engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
-	GET_V_IFACE_ANY(GetServerFactory, server, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
-	GET_V_IFACE_ANY(GetEngineFactory, g_pNetworkServerService, INetworkServerService, NETWORKSERVERSERVICE_INTERFACE_VERSION);
+    GET_V_IFACE_CURRENT(GetEngineFactory, engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
+    GET_V_IFACE_ANY(GetServerFactory, server, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
+    GET_V_IFACE_ANY(GetEngineFactory, g_pNetworkServerService, INetworkServerService, NETWORKSERVERSERVICE_INTERFACE_VERSION);
 
-	// Required to get the IMetamodListener events
-	g_SMAPI->AddListener( this, this );
+    // Required to get the IMetamodListener events
+    g_SMAPI->AddListener(this, this);
 
-	META_CONPRINTF( "Starting plugin.\n" );
+    META_CONPRINTF("Starting plugin.\n");
 
-	SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &SQLPlugin::Hook_GameFrame, true);
+    SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &SQLPlugin::Hook_GameFrame, true);
 
-	if (mysql_library_init(0, NULL, NULL))
-	{
-		snprintf(error, maxlen, "Failed to initialize mysql library\n");
-		return false;
-	}
+    if (mysql_library_init(0, NULL, NULL))
+    {
+        snprintf(error, maxlen, "Failed to initialize mysql library\n");
+        return false;
+    }
 
-	g_mysqlClient = new CMySQLClient();
+    g_mysqlClient = new CMySQLClient();
 
-	return true;
+    return true;
 }
 
 bool SQLPlugin::Unload(char *error, size_t maxlen)
 {
-	mysql_library_end();
+    mysql_library_end();
 
-	delete g_mysqlClient;
-	delete g_sqliteClient;
-	delete g_sqlInterface;
-	return true;
+    delete g_mysqlClient;
+    delete g_sqliteClient;
+    delete g_sqlInterface;
+    return true;
 }
 
-void* SQLPlugin::OnMetamodQuery(const char* iface, int* ret)
+void *SQLPlugin::OnMetamodQuery(const char *iface, int *ret)
 {
-	if (!strcmp(iface, SQLMM_INTERFACE))
-	{
-		*ret = META_IFACE_OK;
-		return g_sqlInterface;
-	}
+    if (!strcmp(iface, SQLMM_INTERFACE))
+    {
+        *ret = META_IFACE_OK;
+        return g_sqlInterface;
+    }
 
-	*ret = META_IFACE_FAILED;
-	return nullptr;
+    *ret = META_IFACE_FAILED;
+    return nullptr;
 }
 
-void SQLPlugin::Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTick )
+void SQLPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
 {
-	/**
-	 * simulating:
-	 * ***********
-	 * true  | game is ticking
-	 * false | game is not ticking
-	 */
+    /**
+     * simulating:
+     * ***********
+     * true  | game is ticking
+     * false | game is not ticking
+     */
 
-	for (auto connection : g_vecMysqlConnections)
-	{
-		connection->RunFrame();
-	}
+    for (auto connection : g_vecMysqlConnections)
+    {
+        connection->RunFrame();
+    }
 }
 
 const char *SQLPlugin::GetLicense()
 {
-	return "GPLv3";
+    return "GPLv3";
 }
 
 const char *SQLPlugin::GetVersion()
 {
-	return "1.0.0.0";
+    return "1.0.0.0";
 }
 
 const char *SQLPlugin::GetDate()
 {
-	return __DATE__;
+    return __DATE__;
 }
 
 const char *SQLPlugin::GetLogTag()
 {
-	return "SQLMM";
+    return "SQLMM";
 }
 
 const char *SQLPlugin::GetAuthor()
 {
-	return "Poggu, zer0.k";
+    return "Poggu, zer0.k";
 }
 
 const char *SQLPlugin::GetDescription()
 {
-	return "Exposes SQL connectivity";
+    return "Exposes SQL connectivity";
 }
 
 const char *SQLPlugin::GetName()
 {
-	return "SQLMM";
+    return "SQLMM";
 }
 
 const char *SQLPlugin::GetURL()
 {
-	return "https://poggu.me";
+    return "https://poggu.me";
 }
 
 IMySQLClient *SQLInterface::GetMySQLClient()
 {
-	return g_mysqlClient;
+    return g_mysqlClient;
 }
 
 ISQLiteClient *SQLInterface::GetSQLiteClient()
 {
-	return g_sqliteClient;
+    return g_sqliteClient;
 }
 
 size_t UTIL_Format(char *buffer, size_t maxlength, const char *fmt, ...)
 {
-	va_list ap;
-	va_start(ap, fmt);
-	size_t len = vsnprintf(buffer, maxlength, fmt, ap);
-	va_end(ap);
+    va_list ap;
+    va_start(ap, fmt);
+    size_t len = vsnprintf(buffer, maxlength, fmt, ap);
+    va_end(ap);
 
-	if (len >= maxlength)
-	{
-		buffer[maxlength - 1] = '\0';
-		return (maxlength - 1);
-	}
-	else {
-		return len;
-	}
+    if (len >= maxlength)
+    {
+        buffer[maxlength - 1] = '\0';
+        return (maxlength - 1);
+    }
+    else
+    {
+        return len;
+    }
 }
 
 unsigned int strncopy(char *dest, const char *src, size_t count)
 {
-	if (!count)
-	{
-		return 0;
-	}
+    if (!count)
+    {
+        return 0;
+    }
 
-	char *start = dest;
-	while ((*src) && (--count))
-	{
-		*dest++ = *src++;
-	}
-	*dest = '\0';
+    char *start = dest;
+    while ((*src) && (--count))
+    {
+        *dest++ = *src++;
+    }
+    *dest = '\0';
 
-	return (dest - start);
+    return (dest - start);
 }

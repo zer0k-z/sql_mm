@@ -3,12 +3,12 @@
 
 struct SQLiteConnectionInfo
 {
-	// Absolute file path.
-	const char *database;
+    // Absolute file path.
+    const char *database;
 };
 
 class ISQLiteClient
 {
 public:
-	virtual ISQLConnection *CreateSQLiteConnection(SQLiteConnectionInfo info) = 0;
+    virtual ISQLConnection *CreateSQLiteConnection(SQLiteConnectionInfo info) = 0;
 };

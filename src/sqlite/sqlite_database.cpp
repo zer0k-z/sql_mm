@@ -8,9 +8,7 @@
 
 extern std::vector<SqConnection *> g_vecSqliteConnections;
 
-SqConnection::SqConnection(const SQLiteConnectionInfo info) : info(info)
-{
-}
+SqConnection::SqConnection(const SQLiteConnectionInfo info) : info(info) {}
 
 SqConnection::~SqConnection()
 {
@@ -38,7 +36,9 @@ SqConnection::~SqConnection()
     }
 
     if (m_pDatabase)
+    {
         sqlite3_close(m_pDatabase);
+    }
 }
 
 void SqConnection::Connect(ConnectCallbackFunc callback)
@@ -94,7 +94,9 @@ void SqConnection::Destroy()
 void SqConnection::RunFrame()
 {
     if (!m_ThinkQueue.size())
+    {
         return;
+    }
 
     ThreadOperation *op;
     {
@@ -116,21 +118,21 @@ std::string SqConnection::Escape(char *string)
 
 std::string SqConnection::Escape(const char *string)
 {
-	return Escape(const_cast<char *>(string));
+    return Escape(const_cast<char *>(string));
 }
 
 SqQuery *SqConnection::PrepareQuery(const char *query, char *error, size_t maxlength, int *errCode)
 {
     sqlite3_stmt *stmt = NULL;
-    if ((m_LastErrorCode = sqlite3_prepare_v2(m_pDatabase, query, -1, &stmt, NULL)) != SQLITE_OK
-        || !stmt)
+    if ((m_LastErrorCode = sqlite3_prepare_v2(m_pDatabase, query, -1, &stmt, NULL)) != SQLITE_OK || !stmt)
     {
         const char *msg;
         if (m_LastErrorCode != SQLITE_OK)
         {
             msg = sqlite3_errmsg(m_pDatabase);
         }
-        else {
+        else
+        {
             msg = "Invalid query string";
             m_LastErrorCode = SQLITE_ERROR;
         }
@@ -153,7 +155,9 @@ void SqConnection::ThreadRun()
         if (m_threadQueue.empty())
         {
             if (m_Terminate)
+            {
                 return;
+            }
 
             m_QueueEvent.wait(lock);
             continue;
@@ -177,7 +181,9 @@ void SqConnection::ThreadRun()
 void SqConnection::AddToThreadQueue(ThreadOperation *threadOperation)
 {
     if (!m_thread)
+    {
         m_thread = std::unique_ptr<std::thread>(new std::thread(&SqConnection::ThreadRun, this));
+    }
 
     {
         std::lock_guard<std::mutex> lock(m_Lock);

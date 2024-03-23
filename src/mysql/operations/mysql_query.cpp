@@ -25,37 +25,39 @@
 
 TMySQLQueryOp::~TMySQLQueryOp()
 {
-	delete m_pQuery;
+    delete m_pQuery;
 }
 
 void TMySQLQueryOp::RunThreadPart()
 {
-	auto pDatabase = m_pCon->GetDatabase();
-	m_szError[0] = '\0';
-	if (mysql_query(pDatabase, m_szQuery.c_str()))
-	{
-		V_snprintf(m_szError, sizeof m_szError, "MySQL query error: %s\n", mysql_error(pDatabase));
-		return;
-	}
+    auto pDatabase = m_pCon->GetDatabase();
+    m_szError[0] = '\0';
+    if (mysql_query(pDatabase, m_szQuery.c_str()))
+    {
+        V_snprintf(m_szError, sizeof m_szError, "MySQL query error: %s\n", mysql_error(pDatabase));
+        return;
+    }
 
-	if (mysql_field_count(pDatabase))
-		m_res = mysql_store_result(pDatabase);
+    if (mysql_field_count(pDatabase))
+    {
+        m_res = mysql_store_result(pDatabase);
+    }
 }
 
 void TMySQLQueryOp::RunThinkPart()
 {
-	if(m_szError[0])
-	{
-		ConMsg("%s\n", m_szError);
-		return;
-	}
+    if (m_szError[0])
+    {
+        ConMsg("%s\n", m_szError);
+        return;
+    }
 
-	m_pQuery = new CMySQLQuery(m_pCon, m_res);
-	m_callback(m_pQuery);
+    m_pQuery = new CMySQLQuery(m_pCon, m_res);
+    m_callback(m_pQuery);
 }
 
 void TMySQLQueryOp::CancelThinkPart()
 {
-	mysql_close(m_pCon->GetDatabase());
-	m_pCon->SetDatabase(nullptr);
+    mysql_close(m_pCon->GetDatabase());
+    m_pCon->SetDatabase(nullptr);
 }

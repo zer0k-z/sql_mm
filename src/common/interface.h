@@ -1,7 +1,8 @@
 #pragma once
 #include "public/sql_mm.h"
+
 class SQLInterface : public ISQLInterface
 {
-	IMySQLClient *GetMySQLClient();
-	ISQLiteClient *GetSQLiteClient();
+    IMySQLClient *GetMySQLClient();
+    ISQLiteClient *GetSQLiteClient();
 };

@@ -24,63 +24,59 @@
 
 void TMySQLConnectOp::RunThreadPart()
 {
-	m_szError[0] = '\0';
-	MYSQL* mysql = mysql_init(NULL);
+    m_szError[0] = '\0';
+    MYSQL *mysql = mysql_init(NULL);
 
-	if (!mysql)
-		Error("Uh oh, mysql is null!");
+    if (!mysql)
+    {
+        Error("Uh oh, mysql is null!");
+    }
 
-	const char* host = NULL, * socket = NULL;
+    const char *host = NULL, *socket = NULL;
 
-	int timeout = 60;
+    int timeout = 60;
 
-	mysql_options(mysql, MYSQL_OPT_CONNECT_TIMEOUT, (const char*)&timeout);
-	mysql_options(mysql, MYSQL_OPT_READ_TIMEOUT, (const char*)&timeout);
-	mysql_options(mysql, MYSQL_OPT_WRITE_TIMEOUT, (const char*)&timeout);
+    mysql_options(mysql, MYSQL_OPT_CONNECT_TIMEOUT, (const char *)&timeout);
+    mysql_options(mysql, MYSQL_OPT_READ_TIMEOUT, (const char *)&timeout);
+    mysql_options(mysql, MYSQL_OPT_WRITE_TIMEOUT, (const char *)&timeout);
 
-	bool my_true = true;
-	mysql_options(mysql, MYSQL_OPT_RECONNECT, (const char*)&my_true); // deprecated
+    bool my_true = true;
+    mysql_options(mysql, MYSQL_OPT_RECONNECT, (const char *)&my_true); // deprecated
 
-	if (m_pCon->m_info.host[0] == '/')
-	{
-		host = "localhost";
-		socket = host;
-	}
-	else
-	{
-		host = m_pCon->m_info.host;
-		socket = NULL;
-	}
+    if (m_pCon->m_info.host[0] == '/')
+    {
+        host = "localhost";
+        socket = host;
+    }
+    else
+    {
+        host = m_pCon->m_info.host;
+        socket = NULL;
+    }
 
-	if (!mysql_real_connect(mysql,
-		host,
-		m_pCon->m_info.user,
-		m_pCon->m_info.pass,
-		m_pCon->m_info.database,
-		m_pCon->m_info.port,
-		socket,
-		((1) << 17)))
-	{
+    if (!mysql_real_connect(mysql, host, m_pCon->m_info.user, m_pCon->m_info.pass, m_pCon->m_info.database, m_pCon->m_info.port, socket, ((1) << 17)))
+    {
+        mysql_close(mysql);
+        strncpy(m_szError, mysql_error(mysql), sizeof m_szError);
+        return;
+    }
 
-		mysql_close(mysql);
-		strncpy(m_szError, mysql_error(mysql), sizeof m_szError);
-		return;
-	}
-
-	m_pDatabase = mysql;
+    m_pDatabase = mysql;
 }
 
 void TMySQLConnectOp::RunThinkPart()
 {
-	if (m_szError[0])
-		ConMsg("Failed to establish a MySQL connection: %s\n", m_szError);
+    if (m_szError[0])
+    {
+        ConMsg("Failed to establish a MySQL connection: %s\n", m_szError);
+    }
 
-	m_pCon->SetDatabase(m_pDatabase);
-	m_callback(m_pDatabase != nullptr);
+    m_pCon->SetDatabase(m_pDatabase);
+    m_callback(m_pDatabase != nullptr);
 }
 
 void TMySQLConnectOp::CancelThinkPart()
 {
-	mysql_close(m_pDatabase);
-	m_pCon->SetDatabase(nullptr);
+    mysql_close(m_pDatabase);
+    m_pCon->SetDatabase(nullptr);
 }

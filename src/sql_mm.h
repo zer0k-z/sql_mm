@@ -28,20 +28,22 @@
 class SQLPlugin : public ISmmPlugin, public IMetamodListener
 {
 public:
-	bool Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late);
-	bool Unload(char *error, size_t maxlen);
-	void* OnMetamodQuery(const char* iface, int* ret);
-public: //hooks
-	void Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTick );
+    bool Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late);
+    bool Unload(char *error, size_t maxlen);
+    void *OnMetamodQuery(const char *iface, int *ret);
+
+public: // hooks
+    void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick);
+
 public:
-	const char *GetAuthor();
-	const char *GetName();
-	const char *GetDescription();
-	const char *GetURL();
-	const char *GetLicense();
-	const char *GetVersion();
-	const char *GetDate();
-	const char *GetLogTag();
+    const char *GetAuthor();
+    const char *GetName();
+    const char *GetDescription();
+    const char *GetURL();
+    const char *GetLicense();
+    const char *GetVersion();
+    const char *GetDate();
+    const char *GetLogTag();
 };
 
 extern SQLPlugin g_SQLPlugin;

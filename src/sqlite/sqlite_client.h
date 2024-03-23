@@ -4,5 +4,5 @@
 class SqClient : public ISQLiteClient
 {
 public:
-	ISQLConnection *CreateSQLiteConnection(SQLiteConnectionInfo info);
+    ISQLConnection *CreateSQLiteConnection(SQLiteConnectionInfo info);
 };
