@@ -44,7 +44,7 @@ public:
 	ISQLRow* CurrentRow();
 	bool Rewind();
 	int GetFieldType(unsigned int field);
-	char* GetString(unsigned int columnId, size_t* length = nullptr);
+	const char* GetString(unsigned int columnId, size_t* length = nullptr);
 	size_t GetDataSize(unsigned int columnId);
 	float GetFloat(unsigned int columnId);
 	int GetInt(unsigned int columnId);

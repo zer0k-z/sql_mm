@@ -10,15 +10,20 @@ class SqQuery : public ISQLQuery
 {
 	friend class SqResults;
 public:
-	SqQuery(SqDatabase *parent, sqlite3_stmt *stmt);
+	SqQuery(SqConnection *conn, sqlite3_stmt *stmt);
 	~SqQuery();
 public: //IQuery
 	ISQLResult *GetResultSet();
-	bool FetchMoreResults();
+	bool FetchMoreResults()
+	{
+		return false;
+	}
+	bool Execute();
 	void Destroy();
 public: //IPreparedQuery
+	const char *GetError();
 	unsigned int GetAffectedRows();
-	unsigned int GetInsertID();
+	unsigned int GetInsertId();
 #if 0
 public: //IResultSet
 	unsigned int GetRowCount();
@@ -43,17 +48,17 @@ public: //IResultRow
 	size_t GetDataSize(unsigned int columnId);
 	DBResult GetBlob(unsigned int columnId, const void **pData, size_t *length);
 	DBResult CopyBlob(unsigned int columnId, void *buffer, size_t maxlength, size_t *written);
+#endif
 public:
 	sqlite3_stmt *GetStmt();
-#endif
 private:
-	SqDatabase* m_pDatabase;
+	SqConnection* m_pCon;
 	sqlite3_stmt *m_pStmt;
 	SqResults *m_pResults;
-	//unsigned int m_ParamCount;
-	//String m_LastError;
-	//int m_LastErrorCode;
+	unsigned int m_ParamCount;
+	std::string m_LastError;
+	int m_LastErrorCode;
 	unsigned int m_AffectedRows;
 	unsigned int m_InsertID;
-	//unsigned int m_ColCount;
+	unsigned int m_ColCount;
 };

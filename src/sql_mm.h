@@ -48,4 +48,7 @@ extern SQLPlugin g_SQLPlugin;
 
 PLUGIN_GLOBALVARS();
 
+size_t UTIL_Format(char *buffer, size_t maxlength, const char *fmt, ...);
+unsigned int strncopy(char *dest, const char *src, size_t count);
+
 #endif //_INCLUDE_METAMOD_SOURCE_STUB_PLUGIN_H_

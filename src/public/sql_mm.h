@@ -27,7 +27,7 @@ public:
 	virtual ISQLRow *CurrentRow() = 0;
 	virtual bool Rewind() = 0;
 	virtual int GetFieldType(unsigned int field) = 0;
-	virtual char *GetString(unsigned int columnId, size_t *length = nullptr) = 0;
+	virtual const char *GetString(unsigned int columnId, size_t *length = nullptr) = 0;
 	virtual size_t GetDataSize(unsigned int columnId) = 0;
 	virtual float GetFloat(unsigned int columnId) = 0;
 	virtual int GetInt(unsigned int columnId) = 0;

@@ -33,17 +33,21 @@ public: //IResultSet
 	ISQLRow *FetchRow();
 	ISQLRow *CurrentRow();
 	bool Rewind();
-	int GetFieldType(unsigned int field) { return 0; }
 public: //IResultRow
-	int GetFieldType(unsigned int field);
-	char *GetString(unsigned int columnId, size_t *length = nullptr);
+	int GetFieldType(unsigned int field) { return 0; }
+	const char *GetString(unsigned int columnId, size_t *length = nullptr);
 	size_t GetDataSize(unsigned int columnId);
 	float GetFloat(unsigned int columnId);
 	int GetInt(unsigned int columnId);
 	bool IsNull(unsigned int columnId);
 
+	void ResetResultCount();
+	void PushResult();
+private:
+	SqField *GetField(unsigned int col);
 private:
 	sqlite3_stmt *m_pStmt;		/** DOES NOT CHANGE */
+	std::string *m_ColNames;			/** DOES NOT CHANGE */
 	unsigned int m_ColCount;	/** DOES NOT CHANGE */
 	BaseStringTable m_Strings;	/** DOES NOT CHANGE */
 	BaseMemTable *m_pMemory;	/** DOES NOT CHANGE */

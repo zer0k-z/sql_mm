@@ -77,9 +77,6 @@
     <ClCompile Include="src\sqlite\sqlite_result.cpp">
       <Filter>Source Files\sqlite</Filter>
     </ClCompile>
-    <ClCompile Include="src\sqlite\sqlite_client.cpp">
-      <Filter>Source Files\sqlite</Filter>
-    </ClCompile>
     <ClCompile Include="src\sqlite\operations\sqlite_connectop.cpp">
       <Filter>Source Files\sqlite\operations</Filter>
     </ClCompile>
@@ -90,6 +87,9 @@
       <Filter>Source Files\vendor\sqlite-source</Filter>
     </ClCompile>
     <ClCompile Include="src\sqlite\sqlite_query.cpp">
+      <Filter>Source Files\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite\sqlite_client.cpp">
       <Filter>Source Files\sqlite</Filter>
     </ClCompile>
   </ItemGroup>
@@ -136,9 +136,6 @@
     <ClInclude Include="src\sqlite\sqlite_result.h">
       <Filter>Header Files\sqlite</Filter>
     </ClInclude>
-    <ClInclude Include="src\sqlite\sqlite_client.h">
-      <Filter>Header Files\sqlite</Filter>
-    </ClInclude>
     <ClInclude Include="vendor\sqlite-source\sqlite3.h">
       <Filter>Header Files\vendor\sqlite-source</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="src\public\sqlite_mm.h">
       <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\sqlite_client.h">
+      <Filter>Header Files\sqlite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,21 +18,41 @@ for sdk_target in MMSPlugin.sdk_targets:
 
   binary.sources += [
     'src/sql_mm.cpp',
-    'src/mysql/mysql_database.cpp',
+    
     'src/mysql/operations/mysql_connect.cpp',
     'src/mysql/operations/mysql_query.cpp',
+    'src/mysql/mysql_database.cpp',
     'src/mysql/mysql_result.cpp',
     'src/mysql/mysql_client.cpp',
+    
+    'vendor/sqlite-source/sqlite3.c'
+    'src/sqlite/operations/sqlite_connectop.cpp'
+    'src/sqlite/operations/sqlite_queryop.cpp'
+    'src/sqlite/sqlite_client.cpp',
+    'src/sqlite/sqlite_database.cpp',
+    'src/sqlite/sqlite_result.cpp',
+    'src/sqlite/sqlite_query.cpp',
+  ]
+
+  binary.compiler.defines += [
+    'SQLITE_OMIT_LOAD_EXTENSION',
+    'SQLITE_THREADSAFE',
+    'SQLITE_USE_URI',
+    'SQLITE_ALLOW_URI_AUTHORITY',
   ]
 
   if binary.compiler.target.platform == 'linux':
     binary.compiler.postlink += [
       '/usr/lib/x86_64-linux-gnu/libmysqlclient.a',
+      '-ldl',
       '-lz',
       '-lpthread',
       '-lm',
     ]
     binary.compiler.postlink += ['-lrt', '-lssl', '-lcrypto']
+
+  if binary.compiler.family == 'gcc' or binary.compiler.family == 'clang':
+    binary.compiler.cxxflags += ['-fno-rtti']
 
   if binary.compiler.target.platform == 'windows':
     binary.compiler.defines += ['WIN32_LEAN_AND_MEAN']
@@ -48,7 +68,5 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(sdk['path'], 'common', 'network_connection.proto'),
   ])]
 
-  if cxx.target.arch == 'x86':
-    binary.sources += ['sourcehook/sourcehook_hookmangen.cpp']
   nodes = builder.Add(binary)
   MMSPlugin.binaries += [nodes]

@@ -14,6 +14,7 @@
 
 #include "mysql/mysql_database.h"
 #include "mysql/mysql_client.h"
+#include "sqlite/sqlite_database.h"
 
 SH_DECL_HOOK3_void(IServerGameDLL, GameFrame, SH_NOATTRIB, 0, bool, bool, bool);
 
@@ -28,6 +29,7 @@ std::vector<MySQLConnection*> g_vecMysqlConnections;
 
 // SQLite
 ISQLiteClient* g_sqliteClient = nullptr;
+std::vector<SqConnection *> g_vecSqliteConnections;
 
 // Should only be called within the active game loop (i e map should be loaded and active)
 // otherwise that'll be nullptr!
@@ -153,4 +155,38 @@ IMySQLClient *SQLInterface::GetMySQLClient()
 ISQLiteClient *SQLInterface::GetSQLiteClient()
 {
 	return g_sqliteClient;
+}
+
+size_t UTIL_Format(char *buffer, size_t maxlength, const char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+	size_t len = vsnprintf(buffer, maxlength, fmt, ap);
+	va_end(ap);
+
+	if (len >= maxlength)
+	{
+		buffer[maxlength - 1] = '\0';
+		return (maxlength - 1);
+	}
+	else {
+		return len;
+	}
+}
+
+unsigned int strncopy(char *dest, const char *src, size_t count)
+{
+	if (!count)
+	{
+		return 0;
+	}
+
+	char *start = dest;
+	while ((*src) && (--count))
+	{
+		*dest++ = *src++;
+	}
+	*dest = '\0';
+
+	return (dest - start);
 }

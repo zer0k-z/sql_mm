@@ -142,7 +142,7 @@ bool CMySQLResult::IsNull(unsigned int columnId)
 	return (m_Row[columnId] == NULL);
 }
 
-char* CMySQLResult::GetString(unsigned int columnId, size_t* length)
+const char* CMySQLResult::GetString(unsigned int columnId, size_t* length)
 {
 	if (columnId >= m_ColCount)
 	{
