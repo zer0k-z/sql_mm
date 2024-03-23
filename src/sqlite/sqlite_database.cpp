@@ -109,14 +109,14 @@ void SqConnection::RunFrame()
 
 std::string SqConnection::Escape(char *string)
 {
-	return Escape(const_cast<char *>(string));
+    std::string result(strlen(string) * 2 + 1, ' ');
+    sqlite3_snprintf(result.size(), result.data(), "%q", string);
+    return result;
 }
 
 std::string SqConnection::Escape(const char *string)
 {
-    std::string result(strlen(string) * 2 + 1, ' ');
-    sqlite3_snprintf(result.size(), result.data(), "%q", string);
-    return result;
+	return Escape(const_cast<char *>(string));
 }
 
 SqQuery *SqConnection::PrepareQuery(const char *query, char *error, size_t maxlength, int *errCode)
