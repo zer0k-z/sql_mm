@@ -2,6 +2,9 @@
 
 #include <mutex>
 #include <queue>
+#include <thread>
+#include <condition_variable>
+#include <functional>
 #include "public/sqlite_mm.h"
 #include "vendor/sqlite-source/sqlite3.h"
 #include "operations/sqlite_queryop.h"
