@@ -14,7 +14,9 @@
 
 #include "mysql/mysql_database.h"
 #include "mysql/mysql_client.h"
+
 #include "sqlite/sqlite_database.h"
+#include "sqlite/sqlite_client.h"
 
 SH_DECL_HOOK3_void(IServerGameDLL, GameFrame, SH_NOATTRIB, 0, bool, bool, bool);
 
@@ -69,7 +71,8 @@ bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, boo
     }
 
     g_mysqlClient = new CMySQLClient();
-
+    g_sqliteClient = new SqClient();
+    g_sqlInterface = new SQLInterface();
     return true;
 }
 
@@ -105,6 +108,10 @@ void SQLPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
      */
 
     for (auto connection : g_vecMysqlConnections)
+    {
+        connection->RunFrame();
+    }
+    for (auto connection : g_vecSqliteConnections)
     {
         connection->RunFrame();
     }

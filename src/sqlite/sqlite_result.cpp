@@ -106,7 +106,10 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
 
     if (field->type == SQLITE_TEXT || field->type == SQLITE_BLOB)
     {
-        *length = field->size;
+        if (length)
+        {
+            *length = field->size;
+        }
         return m_Strings.GetString(field->u.idx);
     }
     else if (field->type == SQLITE_INTEGER)
@@ -115,7 +118,10 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
         field->size = UTIL_Format(number, sizeof(number), "%d", field->u.idx);
         field->type = SQLITE_TEXT;
         field->u.idx = m_Strings.AddString(number);
-        *length = field->size;
+        if (length)
+        {
+            *length = field->size;
+        }
         return m_Strings.GetString(field->u.idx);
     }
     else if (field->type == SQLITE_FLOAT)
@@ -124,7 +130,10 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
         field->size = UTIL_Format(number, sizeof(number), "%f", field->u.f);
         field->type = SQLITE_TEXT;
         field->u.idx = m_Strings.AddString(number);
-        *length = field->size;
+        if (length)
+        {
+            *length = field->size;
+        }
         return m_Strings.GetString(field->u.idx);
     }
     return nullptr;

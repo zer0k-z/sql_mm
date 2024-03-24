@@ -1,6 +1,7 @@
 #include "sqlite_queryop.h"
 #include "tier0/dbg.h"
 #include "../sqlite_query.h"
+#include "sql_mm.h"
 
 TSQLiteQueryOp::~TSQLiteQueryOp()
 {
@@ -10,13 +11,14 @@ TSQLiteQueryOp::~TSQLiteQueryOp()
 void TSQLiteQueryOp::RunThreadPart()
 {
     auto pDatabase = m_pCon->GetDatabase();
-    m_pQuery = m_pCon->PrepareQuery(m_szQuery.c_str(), NULL, 0, NULL);
+    m_pQuery = m_pCon->PrepareQuery(m_szQuery.c_str(), m_szError, sizeof(m_szError), NULL);
     if (!m_pQuery)
     {
         return;
     }
     if (!m_pQuery->Execute())
     {
+        strncopy(m_szError, m_pQuery->GetError(), sizeof(m_szError));
         m_pQuery->Destroy();
     }
 }
@@ -29,9 +31,9 @@ void TSQLiteQueryOp::CancelThinkPart()
 
 void TSQLiteQueryOp::RunThinkPart()
 {
-    if (m_pQuery->GetError()[0])
+    if (m_szError[0])
     {
-        ConMsg("%s\n", m_pQuery->GetError());
+        META_CONPRINTF("ERROR: %s\n", m_szError);
         return;
     }
     m_callback(m_pQuery);

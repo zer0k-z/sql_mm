@@ -20,6 +20,7 @@ public:
 private:
     SqConnection *m_pCon;
     std::string m_szQuery;
+    char m_szError[256];
     QueryCallbackFunc m_callback;
     SqResults *m_res = nullptr;
     SqQuery *m_pQuery = nullptr;

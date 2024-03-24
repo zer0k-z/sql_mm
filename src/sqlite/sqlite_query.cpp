@@ -84,5 +84,5 @@ unsigned int SqQuery::GetInsertId()
 
 sqlite3_stmt *SqQuery::GetStmt()
 {
-    return nullptr;
+    return m_pStmt;
 }

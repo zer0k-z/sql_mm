@@ -40,7 +40,7 @@ void TSQLiteConnectOp::RunThinkPart()
 {
     if (m_szError[0])
     {
-        ConMsg("Failed to establish a MySQL connection: %s\n", m_szError);
+        META_CONPRINTF("Failed to establish a SQLite connection: %s\n", m_szError);
     }
 
     m_pCon->SetDatabase(m_pDatabase);
