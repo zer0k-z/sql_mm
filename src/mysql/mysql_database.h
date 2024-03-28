@@ -42,7 +42,7 @@ public:
     void Query(char *query, QueryCallbackFunc callback);
     void Query(const char *query, QueryCallbackFunc callback, ...);
 
-    void ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure) {}
+    void ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure);
 
     void Destroy();
     void RunFrame();

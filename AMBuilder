@@ -21,6 +21,7 @@ for sdk_target in MMSPlugin.sdk_targets:
     
     'src/mysql/operations/mysql_connect.cpp',
     'src/mysql/operations/mysql_query.cpp',
+    'src/mysql/operations/mysql_transact.cpp',
     'src/mysql/mysql_database.cpp',
     'src/mysql/mysql_result.cpp',
     'src/mysql/mysql_client.cpp',
@@ -28,6 +29,7 @@ for sdk_target in MMSPlugin.sdk_targets:
     'vendor/sqlite-source/sqlite3.c',
     'src/sqlite/operations/sqlite_connectop.cpp',
     'src/sqlite/operations/sqlite_queryop.cpp',
+    'src/sqlite/operations/sqlite_transactop.cpp',
     'src/sqlite/sqlite_client.cpp',
     'src/sqlite/sqlite_database.cpp',
     'src/sqlite/sqlite_result.cpp',

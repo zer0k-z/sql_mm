@@ -24,6 +24,7 @@
 
 #include "operations/mysql_connect.h"
 #include "operations/mysql_query.h"
+#include "operations/mysql_transact.h"
 #include <cstdarg>
 
 extern std::vector<MySQLConnection *> g_vecMysqlConnections;
@@ -106,6 +107,12 @@ void MySQLConnection::Query(const char *query, QueryCallbackFunc callback, ...)
 
     TMySQLQueryOp *op = new TMySQLQueryOp(this, std::string(zc.data(), zc.size()), callback);
 
+    AddToThreadQueue(op);
+}
+
+void MySQLConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
+{
+    TMySQLTransactOp *op = new TMySQLTransactOp(this, txn, success, failure);
     AddToThreadQueue(op);
 }
 
