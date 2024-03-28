@@ -1,16 +1,34 @@
-# MySQLMM
+# SQLMM
 
-MySQLMM is a simple non-blocking MySQL connector for MetaMod.
+SQLMM provides simple non-blocking MySQL/SQLite connectors for MetaMod.
 
 # Features
 
-- Non-blocking MySQL queries
+- Non-blocking MySQL/SQLite queries/transactions
 - Windows & Linux support
 - Simple API
 
 # Interface
 
-MySQLMM will expose an interface in `OnMetamodQuery` which can then be queried with `(IMySQLClient*)g_SMAPI->MetaFactory(MYSQLMM_INTERFACE, &ret, NULL);` by other plugins.
+SQLMM will expose an interface in `OnMetamodQuery` which can then be queried with `(ISQLInterface*)g_SMAPI->MetaFactory(SQLMM_INTERFACE, &ret, NULL);` by other plugins.
+Example:
+```c++
+  ISQLiteClient *g_pSQLiteClient;
+	g_pSQLiteClient = ((ISQLInterface *)g_SMAPI->MetaFactory(SQLMM_INTERFACE, nullptr, nullptr))->GetSQLiteClient();
+	g_SMAPI->PathFormat(buffer, sizeof(buffer), "path/to/database/db.sqlite3");
+	if (g_pSQLiteClient)
+	{
+		SQLiteConnectionInfo info;
+		info.database = buffer;
+		conn = g_pSQLiteClient->CreateSQLiteConnection(info);
+		conn->Connect(
+			[](bool success)
+			{
+        //...
+			});
+	}
+```
+
 Interface definition can be found in `src/public`.
 
 ## Compilation
@@ -20,12 +38,8 @@ Interface definition can be found in `src/public`.
 - [Metamod:Source](https://www.sourcemm.net/downloads.php/?branch=master) (build 1219 or higher)
 - [AMBuild](https://wiki.alliedmods.net/Ambuild)
 
-### Instructions
-
-Follow the instructions below to compile CS2Fixes.
-
 ```bash
-git clone https://github.com/Poggicek/mysql_mm && cd mysql_mm
+git clone https://github.com/zer0k-z/sql_mm && cd sql_mm
 
 export MMSOURCE112=/path/to/metamod/
 export HL2SDKCS2=/path/to/hl2sdk-cs2
