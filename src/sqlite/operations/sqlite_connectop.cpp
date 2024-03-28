@@ -1,5 +1,7 @@
 #include "sqlite_connectop.h"
 #include "sql_mm.h"
+#include "filesystem.h"
+#include "bufferstring.h"
 
 int busy_handler(void *unused1, int unused2)
 {
@@ -17,7 +19,22 @@ void TSQLiteConnectOp::RunThreadPart()
 
     /* Try to open a new connection */
     sqlite3 *sql;
-    int err = sqlite3_open(m_pCon->info.database, &sql);
+    g_pFullFileSystem->CreateDirHierarchyForFile(m_pCon->info.database, nullptr);
+
+    /* Get directory path and file name*/
+    char directory[MAX_PATH];
+    V_ExtractFilePath(m_pCon->info.database, directory, MAX_PATH);
+    const char *fileName = V_UnqualifiedFileName(m_pCon->info.database);
+
+    /* Convert directory path to full path */
+    CBufferStringGrowable<MAX_PATH> fullPathBuffer;
+    const char *path = g_pFullFileSystem->RelativePathToFullPath(directory, nullptr, fullPathBuffer);
+
+    /* Merge the abs path and file name */
+    char fullPath[MAX_PATH];
+    V_ComposeFileName(fullPathBuffer.Get(), fileName, fullPath, MAX_PATH);
+
+    int err = sqlite3_open(fullPath, &sql);
     if (err != SQLITE_OK)
     {
         strncopy(m_szError, sqlite3_errmsg(sql), sizeof(m_szError));

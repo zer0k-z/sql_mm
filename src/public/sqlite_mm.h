@@ -3,8 +3,8 @@
 
 struct SQLiteConnectionInfo
 {
-    // Absolute file path.
-    const char *database;
+    // Relative to the base game directory.
+    char *database;
 };
 
 class ISQLiteClient

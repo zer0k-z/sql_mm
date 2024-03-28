@@ -176,6 +176,7 @@
     <ClCompile Include="src\mysql\mysql_result.cpp" />
     <ClCompile Include="src\sqlite\operations\sqlite_connectop.cpp" />
     <ClCompile Include="src\sqlite\operations\sqlite_queryop.cpp" />
+    <ClCompile Include="src\sqlite\operations\sqlite_transactop.cpp" />
     <ClCompile Include="src\sqlite\sqlite_client.cpp" />
     <ClCompile Include="src\sqlite\sqlite_database.cpp" />
     <ClCompile Include="src\sqlite\sqlite_query.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="src\public\sqlite_mm.h" />
     <ClInclude Include="src\sqlite\operations\sqlite_connectop.h" />
     <ClInclude Include="src\sqlite\operations\sqlite_queryop.h" />
+    <ClInclude Include="src\sqlite\operations\sqlite_transactop.h" />
     <ClInclude Include="src\sqlite\sqlite_client.h" />
     <ClInclude Include="src\sqlite\sqlite_database.h" />
     <ClInclude Include="src\sqlite\sqlite_query.h" />

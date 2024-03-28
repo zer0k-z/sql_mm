@@ -5,10 +5,15 @@
 
 #include "operations/sqlite_connectop.h"
 #include "operations/sqlite_queryop.h"
+#include "operations/sqlite_transactop.h"
 
 extern std::vector<SqConnection *> g_vecSqliteConnections;
 
-SqConnection::SqConnection(const SQLiteConnectionInfo info) : info(info) {}
+SqConnection::SqConnection(const SQLiteConnectionInfo info)
+{
+    this->info.database = new char[strlen(info.database) + 1];
+    strncopy(this->info.database, info.database, strlen(info.database) + 1);
+}
 
 SqConnection::~SqConnection()
 {
@@ -39,6 +44,7 @@ SqConnection::~SqConnection()
     {
         sqlite3_close(m_pDatabase);
     }
+    delete this->info.database;
 }
 
 void SqConnection::Connect(ConnectCallbackFunc callback)
@@ -82,6 +88,12 @@ void SqConnection::Query(const char *query, QueryCallbackFunc callback, ...)
 
     TSQLiteQueryOp *op = new TSQLiteQueryOp(this, std::string(zc.data(), zc.size()), callback);
 
+    AddToThreadQueue(op);
+}
+
+void SqConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
+{
+    TSQLiteTransactOp *op = new TSQLiteTransactOp(this, txn, success, failure);
     AddToThreadQueue(op);
 }
 

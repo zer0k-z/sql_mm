@@ -9,6 +9,13 @@ class ISQLQuery;
 
 typedef std::function<void(bool)> ConnectCallbackFunc;
 typedef std::function<void(ISQLQuery *)> QueryCallbackFunc;
+typedef std::function<void(std::vector<ISQLQuery *>)> TransactionSuccessCallbackFunc;
+typedef std::function<void(std::string, int)> TransactionFailureCallbackFunc;
+
+struct Transaction
+{
+    std::vector<std::string> queries;
+};
 
 class ISQLRow
 {
@@ -49,6 +56,7 @@ public:
     virtual void Connect(ConnectCallbackFunc callback) = 0;
     virtual void Query(char *query, QueryCallbackFunc callback) = 0;
     virtual void Query(const char *query, QueryCallbackFunc callback, ...) = 0;
+    virtual void ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure) = 0;
     virtual void Destroy() = 0;
     virtual std::string Escape(char *string) = 0;
     virtual std::string Escape(const char *string) = 0;

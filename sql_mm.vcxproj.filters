@@ -92,6 +92,9 @@
     <ClCompile Include="src\sqlite\sqlite_client.cpp">
       <Filter>Source Files\sqlite</Filter>
     </ClCompile>
+    <ClCompile Include="src\sqlite\operations\sqlite_transactop.cpp">
+      <Filter>Source Files\sqlite\operations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sql_mm.h">
@@ -150,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="src\sqlite\sqlite_client.h">
       <Filter>Header Files\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlite\operations\sqlite_transactop.h">
+      <Filter>Header Files\sqlite\operations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
