@@ -44,6 +44,9 @@ for sdk_target in MMSPlugin.sdk_targets:
   ]
 
   if binary.compiler.target.platform == 'linux':
+    binary.sources += [
+      'src/utils/plat_linux.cpp'
+    ]
     binary.compiler.postlink += [
       '/usr/lib/x86_64-linux-gnu/libmysqlclient.a',
       '-ldl',

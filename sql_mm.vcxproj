@@ -183,6 +183,7 @@
     <ClCompile Include="src\sqlite\sqlite_query.cpp" />
     <ClCompile Include="src\sqlite\sqlite_result.cpp" />
     <ClCompile Include="src\sql_mm.cpp" />
+    <ClCompile Include="src\utils\plat_win.cpp" />
     <ClCompile Include="vendor\sqlite-source\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>

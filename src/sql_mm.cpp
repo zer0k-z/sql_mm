@@ -17,13 +17,23 @@
 
 #include "sqlite/sqlite_database.h"
 #include "sqlite/sqlite_client.h"
+#include "utils/module.h"
 
-SH_DECL_HOOK3_void(IServerGameDLL, GameFrame, SH_NOATTRIB, 0, bool, bool, bool);
+#ifdef WIN32
+#define GAMEBIN "/csgo/bin/win64/"
+#else
+#define GAMEBIN "/csgo/bin/linuxsteamrt64/"
+#endif
+
+SH_DECL_HOOK1_void(IGameSystem, ServerGamePostSimulate, SH_NOATTRIB, 0, const EventServerGamePostSimulate_t *);
 
 SQLPlugin g_SQLPlugin;
 IServerGameDLL *server = nullptr;
 IVEngineServer *engine = nullptr;
+CModule *serverModule = nullptr;
 ISQLInterface *g_sqlInterface = nullptr;
+
+int serverGamePostSimulateHook;
 
 // MySQL
 IMySQLClient *g_mysqlClient = nullptr;
@@ -63,17 +73,22 @@ bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, boo
 
     META_CONPRINTF("Starting plugin.\n");
 
-    SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &SQLPlugin::Hook_GameFrame, true);
-
     if (mysql_library_init(0, NULL, NULL))
     {
         snprintf(error, maxlen, "Failed to initialize mysql library\n");
         return false;
     }
-
+    serverModule = new CModule(GAMEBIN, "server");
     g_mysqlClient = new CMySQLClient();
     g_sqliteClient = new SqClient();
     g_sqlInterface = new SQLInterface();
+    // clang-format off
+    serverGamePostSimulateHook = SH_ADD_DVPHOOK(IGameSystem,
+        ServerGamePostSimulate, 
+        (IGameSystem *)serverModule->FindVirtualTable("CEntityDebugGameSystem"),
+        SH_MEMBER(this, &SQLPlugin::Hook_ServerGamePostSimulate), 
+        true);
+    // clang-format on
     return true;
 }
 
@@ -81,6 +96,7 @@ bool SQLPlugin::Unload(char *error, size_t maxlen)
 {
     mysql_library_end();
 
+    delete serverModule;
     delete g_mysqlClient;
     delete g_sqliteClient;
     delete g_sqlInterface;
@@ -99,15 +115,8 @@ void *SQLPlugin::OnMetamodQuery(const char *iface, int *ret)
     return nullptr;
 }
 
-void SQLPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
+void SQLPlugin::Hook_ServerGamePostSimulate(const EventServerGamePostSimulate_t *)
 {
-    /**
-     * simulating:
-     * ***********
-     * true  | game is ticking
-     * false | game is not ticking
-     */
-
     for (auto connection : g_vecMysqlConnections)
     {
         connection->RunFrame();
@@ -125,7 +134,7 @@ const char *SQLPlugin::GetLicense()
 
 const char *SQLPlugin::GetVersion()
 {
-    return "1.0.0.0";
+    return "1.1.0.0";
 }
 
 const char *SQLPlugin::GetDate()

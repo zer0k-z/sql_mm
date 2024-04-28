@@ -51,6 +51,9 @@
     <Filter Include="Header Files\vendor\sqlite-source">
       <UniqueIdentifier>{92beaf78-ef71-4b5f-a7a2-51f42ac199d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{2541ae64-8479-47ec-94f1-f49633326cfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sql_mm.cpp">
@@ -97,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="src\mysql\operations\mysql_transact.cpp">
       <Filter>Source Files\mysql\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\plat_win.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
