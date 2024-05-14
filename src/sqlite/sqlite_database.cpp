@@ -11,8 +11,9 @@ extern std::vector<SqConnection *> g_vecSqliteConnections;
 
 SqConnection::SqConnection(const SQLiteConnectionInfo info)
 {
-    this->info.database = new char[strlen(info.database) + 1];
-    strncopy(this->info.database, info.database, strlen(info.database) + 1);
+    char *database = new char[strlen(info.database) + 1];
+    strncopy(database, info.database, strlen(info.database) + 1);
+    this->info.database = database;
 }
 
 SqConnection::~SqConnection()
