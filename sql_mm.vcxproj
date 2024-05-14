@@ -126,7 +126,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(HL2SDKCS2)/public;$(HL2SDKCS2)/public/tier0;$(HL2SDKCS2)/game/shared;$(HL2SDKCS2)/game/server;$(HL2SDKCS2)/public/tier1;$(HL2SDKCS2)/public/mathlib;$(MMSOURCE112)/core;$(MMSOURCE112)/core/sourcehook;$(HL2SDKCS2)/public/entity2;$(HL2SDKCS2)/public/game/server;vendor/mysql/include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(HL2SDKCS2)/public;$(HL2SDKCS2)/public/tier0;$(HL2SDKCS2)/game/shared;$(HL2SDKCS2)/game/server;$(HL2SDKCS2)/public/tier1;$(HL2SDKCS2)/public/mathlib;$(MMSOURCE112)/core;$(MMSOURCE112)/core/sourcehook;$(HL2SDKCS2)/public/entity2;$(HL2SDKCS2)/public/game/server;vendor/mysql/include;$(SolutionDir);$(SolutionDir)/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
