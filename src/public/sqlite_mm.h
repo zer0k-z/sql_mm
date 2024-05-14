@@ -4,7 +4,7 @@
 struct SQLiteConnectionInfo
 {
     // Relative to the base game directory.
-    char *database;
+    const char *database;
 };
 
 class ISQLiteClient
