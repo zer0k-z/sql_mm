@@ -67,7 +67,6 @@ bool TMySQLTransactOp::DoSimpleQuery(const char *query)
 CMySQLQuery *TMySQLTransactOp::DoQuery(const char *query)
 {
     auto pDatabase = m_pCon->GetDatabase();
-    m_szError[0] = '\0';
     if (mysql_query(pDatabase, query))
     {
         V_snprintf(m_szError, sizeof m_szError, "MySQL query error: %s\n", mysql_error(pDatabase));
