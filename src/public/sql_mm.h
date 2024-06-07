@@ -3,7 +3,7 @@
 #include <functional>
 #include <string>
 
-#define SQLMM_INTERFACE "SQLInterface"
+#define SQLMM_INTERFACE "SQLInterface2"
 
 class ISQLQuery;
 
@@ -15,6 +15,21 @@ typedef std::function<void(std::string, int)> TransactionFailureCallbackFunc;
 struct Transaction
 {
     std::vector<std::string> queries;
+
+    void AddQuery(const char *query)
+    {
+        queries.push_back(query);
+    };
+
+    std::string GetQuery(int i)
+    {
+        return queries[i];
+    }
+
+    size_t GetQueryCount()
+    {
+        return queries.size();
+    }
 };
 
 class ISQLRow
@@ -56,7 +71,7 @@ public:
     virtual void Connect(ConnectCallbackFunc callback) = 0;
     virtual void Query(char *query, QueryCallbackFunc callback) = 0;
     virtual void Query(const char *query, QueryCallbackFunc callback, ...) = 0;
-    virtual void ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure) = 0;
+    virtual void ExecuteTransaction(Transaction *txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure) = 0;
     virtual void Destroy() = 0;
     virtual std::string Escape(char *string) = 0;
     virtual std::string Escape(const char *string) = 0;

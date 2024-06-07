@@ -17,9 +17,9 @@ void TMySQLTransactOp::RunThreadPart()
     {
         return;
     }
-    for (size_t i = 0; i < this->m_txn.queries.size(); i++)
+    for (size_t i = 0; i < this->m_txn.GetQueryCount(); i++)
     {
-        CMySQLQuery *result = DoQuery(this->m_txn.queries[i].c_str());
+        CMySQLQuery *result = DoQuery(this->m_txn.GetQuery(i).c_str());
         if (!result)
         {
             this->DoSimpleQuery("ROLLBACK");

@@ -110,9 +110,9 @@ void MySQLConnection::Query(const char *query, QueryCallbackFunc callback, ...)
     AddToThreadQueue(op);
 }
 
-void MySQLConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
+void MySQLConnection::ExecuteTransaction(Transaction *txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
 {
-    TMySQLTransactOp *op = new TMySQLTransactOp(this, txn, success, failure);
+    TMySQLTransactOp *op = new TMySQLTransactOp(this, *txn, success, failure);
     AddToThreadQueue(op);
 }
 
