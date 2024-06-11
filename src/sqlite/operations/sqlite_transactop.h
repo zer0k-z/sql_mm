@@ -24,7 +24,7 @@ private:
     SqConnection *m_pCon;
     Transaction m_txn;
     char m_szError[256];
-    int m_failIndex;
+    int m_failIndex = -1;
     TransactionSuccessCallbackFunc m_successCallback;
     TransactionFailureCallbackFunc m_failureCallback;
     std::vector<ISQLQuery *> m_pQueries;
