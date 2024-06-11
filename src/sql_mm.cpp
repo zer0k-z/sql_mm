@@ -134,7 +134,7 @@ const char *SQLPlugin::GetLicense()
 
 const char *SQLPlugin::GetVersion()
 {
-    return "1.3.0.0";
+    return "1.2.0.0";
 }
 
 const char *SQLPlugin::GetDate()

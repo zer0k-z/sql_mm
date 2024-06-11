@@ -92,9 +92,9 @@ void SqConnection::Query(const char *query, QueryCallbackFunc callback, ...)
     AddToThreadQueue(op);
 }
 
-void SqConnection::ExecuteTransaction(Transaction *txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
+void SqConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
 {
-    TSQLiteTransactOp *op = new TSQLiteTransactOp(this, *txn, success, failure);
+    TSQLiteTransactOp *op = new TSQLiteTransactOp(this, txn, success, failure);
     AddToThreadQueue(op);
 }
 

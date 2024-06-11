@@ -18,9 +18,9 @@ void TSQLiteTransactOp::RunThreadPart()
     {
         return;
     }
-    for (size_t i = 0; i < this->m_txn.GetQueryCount(); i++)
+    for (size_t i = 0; i < this->m_txn.queries.size(); i++)
     {
-        SqQuery *result = DoQuery(this->m_txn.GetQuery(i).c_str());
+        SqQuery *result = DoQuery(this->m_txn.queries[i].c_str());
         if (!result)
         {
             this->DoSimpleQuery("ROLLBACK");
