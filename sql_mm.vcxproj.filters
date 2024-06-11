@@ -104,6 +104,9 @@
     <ClCompile Include="src\utils\plat_win.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
+    <ClCompile Include="$(HL2SDKCS2)\public\tier0\memoverride.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sql_mm.h">

@@ -144,7 +144,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>__STDC_LIMIT_MACROS;X64BITS;WIN32;COMPILER_MSVC;COMPILER_MSVC64;_CRT_NO_VA_START_VALIDATION;_ITERATOR_DEBUG_LEVEL=0;NDEBUG;_WINDOWS;sql_mm_EXPORTS;_USRDLL;META_IS_SOURCE2;SUBHOOK_STATIC;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
@@ -152,7 +152,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(HL2SDKCS2)/public;$(HL2SDKCS2)/public/tier0;$(HL2SDKCS2)/game/shared;$(HL2SDKCS2)/game/server;$(HL2SDKCS2)/public/tier1;$(HL2SDKCS2)/public/mathlib;$(MMSOURCE112)/core;$(MMSOURCE112)/core/sourcehook;$(HL2SDKCS2)/public/entity2;$(HL2SDKCS2)/public/game/server;vendor/mysql/include;$(SolutionDir)/src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -169,6 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="$(HL2SDKCS2)\public\tier0\memoverride.cpp" />
     <ClCompile Include="src\mysql\mysql_client.cpp" />
     <ClCompile Include="src\mysql\mysql_database.cpp" />
     <ClCompile Include="src\mysql\operations\mysql_connect.cpp" />
