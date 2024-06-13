@@ -44,7 +44,7 @@ void TSQLiteTransactOp::CancelThinkPart()
 
 void TSQLiteTransactOp::RunThinkPart()
 {
-    if (!m_szError[0] || m_failIndex == -1)
+    if (!m_szError[0])
     {
         m_successCallback(m_pQueries);
         m_pQueries.clear();
