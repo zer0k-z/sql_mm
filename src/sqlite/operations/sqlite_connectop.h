@@ -14,5 +14,5 @@ private:
     SqConnection *m_pCon;
     ConnectCallbackFunc m_callback;
     sqlite3 *m_pDatabase = nullptr;
-    char m_szError[255];
+    char m_szError[255] {};
 };

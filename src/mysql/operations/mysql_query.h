@@ -40,5 +40,5 @@ private:
     QueryCallbackFunc m_callback;
     MYSQL_RES *m_res = nullptr;
     CMySQLQuery *m_pQuery = nullptr;
-    char m_szError[255];
+    char m_szError[255] {};
 };

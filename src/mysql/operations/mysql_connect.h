@@ -35,5 +35,5 @@ private:
     MySQLConnection *m_pCon;
     ConnectCallbackFunc m_callback;
     MYSQL *m_pDatabase = nullptr;
-    char m_szError[255];
+    char m_szError[255] {};
 };
