@@ -2,6 +2,9 @@
 
 SQLMM provides simple non-blocking MySQL/SQLite connectors for MetaMod.
 
+> [!IMPORTANT]
+> Linux build requires `libmysqlclient-dev` package to be installed.
+
 # Features
 
 - Non-blocking MySQL/SQLite queries/transactions
@@ -48,6 +51,3 @@ mkdir build && cd build
 python3 ../configure.py -s cs2
 ambuild
 ```
-
-> [!IMPORTANT]
-> Linux build requires `libmysqlclient-dev` package to be installed.
