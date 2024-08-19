@@ -177,11 +177,6 @@ ISQLiteClient *SQLInterface::GetSQLiteClient()
     return g_sqliteClient;
 }
 
-const char *SQLInterface::GetVersion()
-{
-    return g_SQLPlugin.GetVersion();
-}
-
 size_t UTIL_Format(char *buffer, size_t maxlength, const char *fmt, ...)
 {
     va_list ap;
