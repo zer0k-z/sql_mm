@@ -134,7 +134,7 @@ const char *SQLPlugin::GetLicense()
 
 const char *SQLPlugin::GetVersion()
 {
-    return "1.3.2.0";
+    return "1.3.3.0";
 }
 
 const char *SQLPlugin::GetDate()
@@ -175,6 +175,11 @@ IMySQLClient *SQLInterface::GetMySQLClient()
 ISQLiteClient *SQLInterface::GetSQLiteClient()
 {
     return g_sqliteClient;
+}
+
+const char *SQLInterface::GetVersion()
+{
+    return g_SQLPlugin.GetVersion();
 }
 
 size_t UTIL_Format(char *buffer, size_t maxlength, const char *fmt, ...)
