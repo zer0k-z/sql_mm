@@ -39,6 +39,7 @@ public:
     virtual float GetFloat(unsigned int columnId) = 0;
     virtual int GetInt(unsigned int columnId) = 0;
     virtual bool IsNull(unsigned int columnId) = 0;
+    virtual int64_t GetInt64(unsigned int columnId) = 0;
 };
 
 class ISQLQuery

@@ -49,6 +49,7 @@ public: // IResultRow
     float GetFloat(unsigned int columnId);
     int GetInt(unsigned int columnId);
     bool IsNull(unsigned int columnId);
+    int64_t GetInt64(unsigned int columnId);
 
     void ResetResultCount();
     void PushResult();

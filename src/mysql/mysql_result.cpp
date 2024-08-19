@@ -187,6 +187,20 @@ float CMySQLResult::GetFloat(unsigned int columnId)
     return (float)atof(m_Row[columnId]);
 }
 
+int64_t CMySQLResult::GetInt64(unsigned int columnId)
+{
+    if (columnId >= m_ColCount)
+    {
+        return 0;
+    }
+    else if (m_Row[columnId] == NULL)
+    {
+        return 0;
+    }
+
+    return atoll(m_Row[columnId]);
+}
+
 int CMySQLResult::GetInt(unsigned int columnId)
 {
     if (columnId >= m_ColCount)

@@ -183,6 +183,38 @@ float SqResults::GetFloat(unsigned int columnId)
     return fVal;
 }
 
+int64_t SqResults::GetInt64(unsigned int columnId)
+{
+    SqField *field = GetField(columnId);
+    if (!field)
+    {
+        return 0.0f;
+    }
+    else if (field->type == SQLITE_BLOB || field->type == SQLITE_NULL)
+    {
+        return 0.0f;
+    }
+
+    int val = 0;
+    if (field->type == SQLITE_INTEGER)
+    {
+        val = field->u.idx;
+    }
+    else if (field->type == SQLITE_TEXT)
+    {
+        const char *ptr = m_Strings.GetString(field->u.idx);
+        if (ptr)
+        {
+            val = atoll(ptr);
+        }
+    }
+    else if (field->type == SQLITE_FLOAT)
+    {
+        val = (int64_t)field->u.f;
+    }
+    return val;
+}
+
 int SqResults::GetInt(unsigned int columnId)
 {
     SqField *field = GetField(columnId);

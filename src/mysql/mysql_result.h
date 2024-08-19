@@ -50,6 +50,7 @@ public:
     float GetFloat(unsigned int columnId);
     int GetInt(unsigned int columnId);
     bool IsNull(unsigned int columnId);
+    int64_t GetInt64(unsigned int columnId);
 
 private:
     // MYSQL* m_pDatabase;
