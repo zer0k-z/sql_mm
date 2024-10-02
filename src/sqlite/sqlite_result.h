@@ -13,8 +13,8 @@ struct SqField
 
     union
     {
-        int idx;
-        float f;
+        long long idx;
+        double d;
     } u;
 
     size_t size;

@@ -115,7 +115,7 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
     else if (field->type == SQLITE_INTEGER)
     {
         char number[24];
-        field->size = UTIL_Format(number, sizeof(number), "%d", field->u.idx);
+        field->size = UTIL_Format(number, sizeof(number), "%lld", field->u.idx);
         field->type = SQLITE_TEXT;
         field->u.idx = m_Strings.AddString(number);
         if (length)
@@ -127,7 +127,7 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
     else if (field->type == SQLITE_FLOAT)
     {
         char number[24];
-        field->size = UTIL_Format(number, sizeof(number), "%f", field->u.f);
+        field->size = UTIL_Format(number, sizeof(number), "%llf", field->u.d);
         field->type = SQLITE_TEXT;
         field->u.idx = m_Strings.AddString(number);
         if (length)
@@ -165,7 +165,7 @@ float SqResults::GetFloat(unsigned int columnId)
     float fVal = 0.0f;
     if (field->type == SQLITE_FLOAT)
     {
-        fVal = field->u.f;
+        fVal = field->u.d;
     }
     else if (field->type == SQLITE_TEXT)
     {
@@ -195,7 +195,7 @@ int64_t SqResults::GetInt64(unsigned int columnId)
         return 0.0f;
     }
 
-    int val = 0;
+    long long val = 0;
     if (field->type == SQLITE_INTEGER)
     {
         val = field->u.idx;
@@ -210,7 +210,7 @@ int64_t SqResults::GetInt64(unsigned int columnId)
     }
     else if (field->type == SQLITE_FLOAT)
     {
-        val = (int64_t)field->u.f;
+        val = (int64_t)field->u.d;
     }
     return val;
 }
@@ -242,7 +242,7 @@ int SqResults::GetInt(unsigned int columnId)
     }
     else if (field->type == SQLITE_FLOAT)
     {
-        val = (int)field->u.f;
+        val = (int)field->u.d;
     }
     return val;
 }
@@ -298,13 +298,13 @@ void SqResults::PushResult()
         row[i].type = sqlite3_column_type(m_pStmt, i);
         if (row[i].type == SQLITE_INTEGER)
         {
-            row[i].u.idx = sqlite3_column_int(m_pStmt, i);
-            row[i].size = sizeof(int);
+            row[i].u.idx = sqlite3_column_int64(m_pStmt, i);
+            row[i].size = sizeof(long long);
         }
         else if (row[i].type == SQLITE_FLOAT)
         {
-            row[i].u.f = (float)sqlite3_column_double(m_pStmt, i);
-            row[i].size = sizeof(float);
+            row[i].u.d = (float)sqlite3_column_double(m_pStmt, i);
+            row[i].size = sizeof(double);
         }
         else if (row[i].type == SQLITE_BLOB)
         {
