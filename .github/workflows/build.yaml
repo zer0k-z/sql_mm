@@ -13,10 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     # CS2 dedicated servers run on Steam Runtime 3 ("sniper"). Building against a newer glibc
     # produces a .so the server silently refuses to load.
+    # Debian 11 LTS has ended. bullseye-security packages are being deleted from
+    # deb.debian.org while its index still advertises them, so fetching from it 404s
+    # (mariadb-common, python3-pip). Everything needed is in the base bullseye archive
+    # the image already points at, so drop the security lines entirely.
     container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk
     steps:
       - name: Install dependencies
         run: |
+          sed -i '/-security/d' /etc/apt/sources.list
           apt-get update -o Acquire::Check-Valid-Until=false
           apt-get install -y --no-install-recommends --no-install-suggests \
             git python3-pip default-libmysqlclient-dev lld
