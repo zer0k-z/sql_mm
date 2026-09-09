@@ -22,19 +22,21 @@
 
 #include <ISmmPlugin.h>
 #include <igameevents.h>
-#include <iplayerinfo.h>
-#include <sh_vector.h>
 #include "igamesystem.h"
+
+#define SQLMM_VERSION "1.3.4.2"
 
 class SQLPlugin : public ISmmPlugin, public IMetamodListener
 {
 public:
+    SQLPlugin();
+
     bool Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late);
     bool Unload(char *error, size_t maxlen);
     void *OnMetamodQuery(const char *iface, int *ret);
 
 public: // hooks
-    void Hook_ServerGamePostSimulate(const EventServerGamePostSimulate_t *);
+    KHook::Return<void> Hook_ServerGamePostSimulate(IGameSystem *, const EventServerGamePostSimulate_t *);
 
 public:
     const char *GetAuthor();
@@ -45,6 +47,9 @@ public:
     const char *GetVersion();
     const char *GetDate();
     const char *GetLogTag();
+
+protected:
+    KHook::Virtual<IGameSystem, void, const EventServerGamePostSimulate_t *> m_ServerGamePostSimulate;
 };
 
 extern SQLPlugin g_SQLPlugin;

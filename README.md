@@ -3,7 +3,7 @@
 SQLMM provides simple non-blocking MySQL/SQLite connectors for MetaMod.
 
 > [!IMPORTANT]
-> Linux build requires `libmysqlclient-dev` package to be installed.
+> Linux builds require the `default-libmysqlclient-dev` package to be installed.
 
 # Features
 
@@ -38,16 +38,22 @@ Interface definition can be found in `src/public`.
 
 ### Requirements
 
-- [Metamod:Source](https://www.sourcemm.net/downloads.php/?branch=master) (build 1219 or higher)
+- [Metamod:Source](https://www.sourcemm.net/downloads.php/?branch=master) 2.0.0.1462 or higher, which uses
+  [KHook](https://github.com/Kenzzer/KHook) instead of SourceHook. Clone it with `--recursive`; KHook is a submodule
+  of it and its headers are needed to build.
 - [AMBuild](https://wiki.alliedmods.net/Ambuild)
+- On Linux, the `default-libmysqlclient-dev` and `lld` packages.
 
 ```bash
 git clone https://github.com/zer0k-z/sql_mm && cd sql_mm
+git submodule update --init
 
-export MMSOURCE112=/path/to/metamod/
+export MMSOURCE20=/path/to/metamod-source/
 export HL2SDKCS2=/path/to/hl2sdk-cs2
 
 mkdir build && cd build
 python3 ../configure.py -s cs2
 ambuild
 ```
+
+The package is written to `build/package`.

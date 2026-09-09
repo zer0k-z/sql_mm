@@ -25,15 +25,11 @@
 #define GAMEBIN "/csgo/bin/linuxsteamrt64/"
 #endif
 
-SH_DECL_HOOK1_void(IGameSystem, ServerGamePostSimulate, SH_NOATTRIB, 0, const EventServerGamePostSimulate_t *);
-
 SQLPlugin g_SQLPlugin;
 IServerGameDLL *server = nullptr;
 IVEngineServer *engine = nullptr;
 CModule *serverModule = nullptr;
 ISQLInterface *g_sqlInterface = nullptr;
-
-int serverGamePostSimulateHook;
 
 // MySQL
 IMySQLClient *g_mysqlClient = nullptr;
@@ -59,6 +55,11 @@ CGlobalVars *GetGameGlobals()
 
 PLUGIN_EXPOSE(SQLPlugin, g_SQLPlugin);
 
+SQLPlugin::SQLPlugin() :
+    m_ServerGamePostSimulate(&IGameSystem::OnServerGamePostSimulate, this, nullptr, &SQLPlugin::Hook_ServerGamePostSimulate)
+{
+}
+
 bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
     PLUGIN_SAVEVARS();
@@ -82,18 +83,18 @@ bool SQLPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, boo
     g_mysqlClient = new CMySQLClient();
     g_sqliteClient = new SqClient();
     g_sqlInterface = new SQLInterface();
-    // clang-format off
-    serverGamePostSimulateHook = SH_ADD_DVPHOOK(IGameSystem,
-        ServerGamePostSimulate, 
-        (IGameSystem *)serverModule->FindVirtualTable("CEntityDebugGameSystem"),
-        SH_MEMBER(this, &SQLPlugin::Hook_ServerGamePostSimulate), 
-        true);
-    // clang-format on
+    // KHook::Virtual dereferences the pointer it is given to reach the vtable, so hooking a bare
+    // vtable (what SH_ADD_DVPHOOK took) means handing it a fake instance holding that vtable.
+    void *vtable = serverModule->FindVirtualTable("CEntityDebugGameSystem");
+    m_ServerGamePostSimulate.AddGlobal((IGameSystem *)&vtable);
+
     return true;
 }
 
 bool SQLPlugin::Unload(char *error, size_t maxlen)
 {
+    m_ServerGamePostSimulate.ClearHooks();
+
     mysql_library_end();
 
     delete serverModule;
@@ -115,7 +116,7 @@ void *SQLPlugin::OnMetamodQuery(const char *iface, int *ret)
     return nullptr;
 }
 
-void SQLPlugin::Hook_ServerGamePostSimulate(const EventServerGamePostSimulate_t *)
+KHook::Return<void> SQLPlugin::Hook_ServerGamePostSimulate(IGameSystem *, const EventServerGamePostSimulate_t *)
 {
     for (auto connection : g_vecMysqlConnections)
     {
@@ -125,6 +126,8 @@ void SQLPlugin::Hook_ServerGamePostSimulate(const EventServerGamePostSimulate_t 
     {
         connection->RunFrame();
     }
+
+    return {KHook::Action::Ignore};
 }
 
 const char *SQLPlugin::GetLicense()
@@ -134,7 +137,7 @@ const char *SQLPlugin::GetLicense()
 
 const char *SQLPlugin::GetVersion()
 {
-    return "1.3.4.2";
+    return SQLMM_VERSION;
 }
 
 const char *SQLPlugin::GetDate()

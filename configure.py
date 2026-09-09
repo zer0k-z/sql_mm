@@ -1,5 +1,5 @@
 # vim: set sts=2 ts=8 sw=2 tw=99 et:
-import sys
+import os, sys
 try:
   from ambuild2 import run, util
 except:
@@ -25,7 +25,8 @@ parser.options.add_argument('-a', '--plugin-alias', type=str, dest='plugin_alias
                        help='Plugin alias')
 parser.options.add_argument('--hl2sdk-root', type=str, dest='hl2sdk_root', default=None,
                        help='Root search folder for HL2SDKs')
-parser.options.add_argument('--hl2sdk-manifests', type=str, dest='hl2sdk_manifests', default=None,
+parser.options.add_argument('--hl2sdk-manifests', type=str, dest='hl2sdk_manifests',
+                       default=os.path.join(sys.path[0], 'hl2sdk-manifests'),
                        help='HL2SDK manifests source tree folder')
 parser.options.add_argument('--mms_path', type=str, dest='mms_path', default=None,
                        help='Metamod:Source source tree folder')

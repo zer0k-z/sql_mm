@@ -1,0 +1,14 @@
+name: Build pushes and pull requests
+
+on:
+  push:
+    tags-ignore:
+      - '**'
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yaml
+    with:
+      version: ""

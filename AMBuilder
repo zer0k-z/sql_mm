@@ -1,6 +1,19 @@
 # vim: set sts=2 ts=8 sw=2 tw=99 et ft=python:
 import os
 
+# default-libmysqlclient-dev resolves to MariaDB on Debian derivatives (Steam Runtime included),
+# which names the static library differently depending on the distro and version.
+def FindMySQLStaticLib():
+  libdir = '/usr/lib/x86_64-linux-gnu'
+  candidates = ['libmysqlclient.a', 'libmariadbclient.a', 'libmariadb.a']
+  for name in candidates:
+    path = os.path.join(libdir, name)
+    if os.path.exists(path):
+      return path
+  raise Exception('None of {} found in {}. Install default-libmysqlclient-dev.'.format(
+    ', '.join(candidates), libdir))
+
+
 # Here only one sdk should be available to generate only one executable in the end,
 # as multi-sdk loading isn't supported out of the box by metamod, and would require specifying the full path in the vdf
 # which in the end would ruin the multi-platform (unix, win etc) loading by metamod as it won't be able to append platform specific extension
@@ -48,7 +61,7 @@ for sdk_target in MMSPlugin.sdk_targets:
       'src/utils/plat_linux.cpp'
     ]
     binary.compiler.postlink += [
-      '/usr/lib/x86_64-linux-gnu/libmysqlclient.a',
+      FindMySQLStaticLib(),
       '-ldl',
       '-lz',
       '-lpthread',
@@ -60,6 +73,9 @@ for sdk_target in MMSPlugin.sdk_targets:
     binary.compiler.cxxflags += ['-fno-rtti']
 
   if binary.compiler.target.platform == 'windows':
+    binary.sources += [
+      'src/utils/plat_win.cpp'
+    ]
     binary.compiler.defines += ['WIN32_LEAN_AND_MEAN']
     binary.compiler.cxxincludes += [
       os.path.join(builder.sourcePath, 'vendor', 'mysql', 'include'),

@@ -1,5 +1,5 @@
 # vim: set sts=2 ts=8 sw=2 tw=99 et ft=python:
-import os, sys
+import os, shutil, sys
 
 # Edit the functions below for the extra functionality, the return should be
 # a list of path's to wanted locations
@@ -22,6 +22,12 @@ def additional_includes(context, binary, sdk):
     # 'D:/absolute/path/to/include/folder/'
   ]
 
+def HasLLDLinker():
+  result = shutil.which('lld')
+  if not result:
+    result = shutil.which('ld.lld')
+  return result != None
+
 def ResolveEnvPath(env, folder):
   if env in os.environ:
     path = os.environ[env]
@@ -43,7 +49,9 @@ def ResolveMMSRoot():
   if builder.options.mms_path:
     prenormalized_path = builder.options.mms_path
   else:
-    prenormalized_path = ResolveEnvPath('MMSOURCE112', 'mmsource-1.12')
+    prenormalized_path = ResolveEnvPath('MMSOURCE20', 'mmsource-2.0')
+    if not prenormalized_path:
+      prenormalized_path = ResolveEnvPath('MMSOURCE112', 'mmsource-1.12')
     if not prenormalized_path:
       prenormalized_path = ResolveEnvPath('MMSOURCE111', 'mmsource-1.11')
     if not prenormalized_path:
@@ -149,9 +157,12 @@ class MMSPluginConfig(object):
         '-fno-strict-aliasing',
         '-Wall',
         '-Werror',
+        '-Wno-sign-compare',
         '-Wno-uninitialized',
         '-Wno-unused',
         '-Wno-switch',
+        '-Wno-unknown-pragmas',
+        '-Wno-dangling-else',
         '-msse',
         '-fPIC',
       ]
@@ -256,6 +267,11 @@ class MMSPluginConfig(object):
       elif cxx.family == 'clang':
         cxx.linkflags += ['-lgcc_eh']
       cxx.linkflags += ['-static-libstdc++']
+
+      if HasLLDLinker():
+        # Keeps STB_GNU_UNIQUE symbols out of the binary. The KHook templates emit them, and they
+        # pin the library in memory across dlclose, which is how Metamod unloads plugins.
+        cxx.linkflags += ['-fuse-ld=lld', '-Wl,--no-gnu-unique']
     elif cxx.target.platform == 'windows':
       cxx.defines += ['WIN32', '_WINDOWS']
 
@@ -277,7 +293,7 @@ class MMSPluginConfig(object):
     cxx.cxxincludes += [
       os.path.join(context.currentSourcePath),
       os.path.join(mms_core_path),
-      os.path.join(mms_core_path, 'sourcehook'),
+      os.path.join(self.mms_root, 'third_party', 'khook', 'include'),
     ]
 
     defines = []
@@ -302,6 +318,11 @@ class MMSPluginConfig(object):
 MMSPlugin = MMSPluginConfig()
 MMSPlugin.detectSDKs()
 MMSPlugin.configure()
+
+if os.name == 'posix' and not HasLLDLinker():
+  print('[!] LLD linker not found, using the system default.')
+  print('[!] The resulting binary may not be unloadable at runtime and can crash the server on unload.')
+  print('[!] Install it with: apt install lld')
 
 BuildScripts = [
   'AMBuilder',

@@ -1,0 +1,104 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+
+jobs:
+  build-linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    # CS2 dedicated servers run on Steam Runtime 3 ("sniper"). Building against a newer glibc
+    # produces a .so the server silently refuses to load.
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update -o Acquire::Check-Valid-Until=false
+          apt-get install -y --no-install-recommends --no-install-suggests \
+            git python3-pip default-libmysqlclient-dev lld
+          ls -l /usr/lib/x86_64-linux-gnu/libmysqlclient.a \
+                /usr/lib/x86_64-linux-gnu/libmariadbclient.a \
+                /usr/lib/x86_64-linux-gnu/libmariadb.a 2>/dev/null || true
+
+      - name: Allow git to read the workspace
+        run: git config --global --add safe.directory '*'
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Clone Metamod:Source
+        run: git clone --depth 1 --recursive https://github.com/alliedmodders/metamod-source ../metamod-source
+
+      - name: Clone HL2SDK (cs2)
+        run: git clone --depth 1 --branch cs2 https://github.com/alliedmodders/hl2sdk ../hl2sdk-cs2
+
+      - name: Install AMBuild
+        run: |
+          git clone --depth 1 https://github.com/alliedmodders/ambuild ../ambuild
+          python3 -m pip install ../ambuild || (cd ../ambuild && python3 setup.py install)
+
+      - name: Stamp version
+        if: inputs.version != ''
+        run: sed -i 's|#define SQLMM_VERSION .*|#define SQLMM_VERSION "${{ inputs.version }}"|' src/sql_mm.h
+
+      - name: Build
+        env:
+          MMSOURCE20: ${{ github.workspace }}/../metamod-source
+          HL2SDKCS2: ${{ github.workspace }}/../hl2sdk-cs2
+        run: |
+          mkdir -p build && cd build
+          python3 ../configure.py -s cs2 --enable-optimize
+          ambuild
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sql_mm-linux
+          path: ./build/package
+
+  build-windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Clone Metamod:Source
+        run: git clone --depth 1 --recursive https://github.com/alliedmodders/metamod-source ../metamod-source
+
+      - name: Clone HL2SDK (cs2)
+        run: git clone --depth 1 --branch cs2 https://github.com/alliedmodders/hl2sdk ../hl2sdk-cs2
+
+      - name: Install AMBuild
+        run: |
+          git clone --depth 1 https://github.com/alliedmodders/ambuild ../ambuild
+          python -m pip install ../ambuild
+
+      - name: Stamp version
+        if: inputs.version != ''
+        shell: bash
+        run: sed -i 's|#define SQLMM_VERSION .*|#define SQLMM_VERSION "${{ inputs.version }}"|' src/sql_mm.h
+
+      - name: Build
+        env:
+          MMSOURCE20: ${{ github.workspace }}/../metamod-source
+          HL2SDKCS2: ${{ github.workspace }}/../hl2sdk-cs2
+        run: |
+          mkdir build
+          cd build
+          python ../configure.py -s cs2 --enable-optimize
+          ambuild
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sql_mm-windows
+          path: ./build/package
