@@ -23,7 +23,7 @@ private:
     TransactionFailureCallbackFunc m_failureCallback;
     std::vector<ISQLQuery *> m_pQueries;
     char m_szError[255] {};
-    int m_failIndex;
+    int m_failIndex = -1;
 
     bool DoSimpleQuery(const char *query);
     CMySQLQuery *DoQuery(const char *query);
