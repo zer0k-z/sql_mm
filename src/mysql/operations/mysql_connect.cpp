@@ -21,6 +21,7 @@
 
 #include "mysql_connect.h"
 #include "tier0/dbg.h"
+#include "tier1/strtools.h"
 
 void TMySQLConnectOp::RunThreadPart()
 {
@@ -56,8 +57,8 @@ void TMySQLConnectOp::RunThreadPart()
 
     if (!mysql_real_connect(mysql, host, m_pCon->m_info.user, m_pCon->m_info.pass, m_pCon->m_info.database, m_pCon->m_info.port, socket, ((1) << 17)))
     {
+        V_strncpy(m_szError, mysql_error(mysql), sizeof m_szError);
         mysql_close(mysql);
-        strncpy(m_szError, mysql_error(mysql), sizeof m_szError);
         return;
     }
 
