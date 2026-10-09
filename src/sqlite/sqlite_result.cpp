@@ -66,7 +66,7 @@ bool SqResults::FieldNameToNum(const char *name, unsigned int *columnId)
 
 bool SqResults::MoreRows()
 {
-    return (m_CurRow < 0) ? (m_RowCount > 0) : (m_CurRow < m_RowCount);
+    return m_NextRow < m_RowCount;
 }
 
 ISQLRow *SqResults::FetchRow()
