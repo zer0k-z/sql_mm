@@ -35,7 +35,7 @@ void TMySQLConnectOp::RunThreadPart()
 
     const char *host = NULL, *socket = NULL;
 
-    int timeout = 60;
+    int timeout = m_pCon->m_info.timeout;
 
     mysql_options(mysql, MYSQL_OPT_CONNECT_TIMEOUT, (const char *)&timeout);
     mysql_options(mysql, MYSQL_OPT_READ_TIMEOUT, (const char *)&timeout);
