@@ -53,6 +53,7 @@ void TMySQLQueryOp::RunThinkPart()
     if (m_szError[0])
     {
         ConMsg("%s\n", m_szError);
+        m_callback(nullptr);
         return;
     }
 

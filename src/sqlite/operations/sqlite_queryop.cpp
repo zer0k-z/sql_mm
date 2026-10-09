@@ -37,6 +37,7 @@ void TSQLiteQueryOp::RunThinkPart()
     if (m_szError[0])
     {
         META_CONPRINTF("TSQLiteQueryOp ERROR: %s\n", m_szError);
+        m_callback(nullptr);
         return;
     }
     m_callback(m_pQuery);
