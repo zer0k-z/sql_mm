@@ -29,6 +29,10 @@ CMySQLResult::CMySQLResult(MYSQL_RES *res) : m_pRes(res)
 
 void CMySQLResult::Update()
 {
+    m_CurRow = 0;
+    m_Row = nullptr;
+    m_Lengths = nullptr;
+
     if (!m_pRes)
     {
         m_ColCount = 0;
