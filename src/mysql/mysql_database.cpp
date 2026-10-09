@@ -28,6 +28,7 @@
 #include <cstdarg>
 
 extern std::vector<MySQLConnection *> g_vecMysqlConnections;
+extern bool g_bInFrame;
 
 MySQLConnection::MySQLConnection(const MySQLConnectionInfo info)
 {
@@ -118,13 +119,19 @@ void MySQLConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCall
 
 void MySQLConnection::Destroy()
 {
+    if (g_bInFrame)
+    {
+        m_bDestroyed = true;
+        return;
+    }
+
     g_vecMysqlConnections.erase(std::remove(g_vecMysqlConnections.begin(), g_vecMysqlConnections.end(), this), g_vecMysqlConnections.end());
     delete this;
 }
 
 void MySQLConnection::RunFrame()
 {
-    if (!m_ThinkQueue.size())
+    if (m_bDestroyed || !m_ThinkQueue.size())
     {
         return;
     }

@@ -8,6 +8,7 @@
 #include "operations/sqlite_transactop.h"
 
 extern std::vector<SqConnection *> g_vecSqliteConnections;
+extern bool g_bInFrame;
 
 SqConnection::SqConnection(const SQLiteConnectionInfo info)
 {
@@ -100,13 +101,19 @@ void SqConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbac
 
 void SqConnection::Destroy()
 {
+    if (g_bInFrame)
+    {
+        m_bDestroyed = true;
+        return;
+    }
+
     g_vecSqliteConnections.erase(std::remove(g_vecSqliteConnections.begin(), g_vecSqliteConnections.end(), this), g_vecSqliteConnections.end());
     delete this;
 }
 
 void SqConnection::RunFrame()
 {
-    if (!m_ThinkQueue.size())
+    if (m_bDestroyed || !m_ThinkQueue.size())
     {
         return;
     }

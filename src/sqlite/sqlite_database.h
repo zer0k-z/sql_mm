@@ -22,6 +22,12 @@ public:
     void ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure);
     void Destroy();
     void RunFrame();
+
+    bool IsDestroyed()
+    {
+        return m_bDestroyed;
+    }
+
     std::string Escape(char *string);
     std::string Escape(const char *string);
 
@@ -50,6 +56,7 @@ private:
     std::mutex m_Lock;
     std::mutex m_ThinkLock;
     bool m_Terminate = false;
+    bool m_bDestroyed = false;
 
     sqlite3 *m_pDatabase;
     std::string m_LastError;

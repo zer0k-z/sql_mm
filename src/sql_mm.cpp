@@ -39,6 +39,8 @@ std::vector<MySQLConnection *> g_vecMysqlConnections;
 ISQLiteClient *g_sqliteClient = nullptr;
 std::vector<SqConnection *> g_vecSqliteConnections;
 
+bool g_bInFrame = false;
+
 // Should only be called within the active game loop (i e map should be loaded and active)
 // otherwise that'll be nullptr!
 CGlobalVars *GetGameGlobals()
@@ -118,13 +120,30 @@ void *SQLPlugin::OnMetamodQuery(const char *iface, int *ret)
 
 KHook::Return<void> SQLPlugin::Hook_ServerGamePostSimulate(IGameSystem *, const EventServerGamePostSimulate_t *)
 {
-    for (auto connection : g_vecMysqlConnections)
+    g_bInFrame = true;
+    for (size_t i = 0; i < g_vecMysqlConnections.size(); i++)
     {
-        connection->RunFrame();
+        g_vecMysqlConnections[i]->RunFrame();
     }
-    for (auto connection : g_vecSqliteConnections)
+    for (size_t i = 0; i < g_vecSqliteConnections.size(); i++)
     {
-        connection->RunFrame();
+        g_vecSqliteConnections[i]->RunFrame();
+    }
+    g_bInFrame = false;
+
+    for (auto connection : std::vector<MySQLConnection *>(g_vecMysqlConnections))
+    {
+        if (connection->IsDestroyed())
+        {
+            connection->Destroy();
+        }
+    }
+    for (auto connection : std::vector<SqConnection *>(g_vecSqliteConnections))
+    {
+        if (connection->IsDestroyed())
+        {
+            connection->Destroy();
+        }
     }
 
     return {KHook::Action::Ignore};

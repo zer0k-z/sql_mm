@@ -47,6 +47,11 @@ public:
     void Destroy();
     void RunFrame();
 
+    bool IsDestroyed()
+    {
+        return m_bDestroyed;
+    }
+
     void SetDatabase(MYSQL *db)
     {
         m_pDatabase = db;
@@ -75,5 +80,6 @@ private:
     std::mutex m_Lock;
     std::mutex m_ThinkLock;
     bool m_Terminate = false;
+    bool m_bDestroyed = false;
     MYSQL *m_pDatabase = nullptr;
 };
