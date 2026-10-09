@@ -139,6 +139,7 @@ std::string SqConnection::Escape(char *string)
 {
     std::string result(strlen(string) * 2 + 1, ' ');
     sqlite3_snprintf(result.size(), result.data(), "%q", string);
+    result.resize(strlen(result.c_str()));
     return result;
 }
 
