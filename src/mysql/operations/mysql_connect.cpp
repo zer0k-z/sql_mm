@@ -47,7 +47,7 @@ void TMySQLConnectOp::RunThreadPart()
     if (m_pCon->m_info.host[0] == '/')
     {
         host = "localhost";
-        socket = host;
+        socket = m_pCon->m_info.host;
     }
     else
     {
