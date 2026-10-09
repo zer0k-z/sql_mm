@@ -97,6 +97,15 @@ bool SQLPlugin::Unload(char *error, size_t maxlen)
 {
     m_ServerGamePostSimulate.ClearHooks();
 
+    while (!g_vecMysqlConnections.empty())
+    {
+        g_vecMysqlConnections.back()->Destroy();
+    }
+    while (!g_vecSqliteConnections.empty())
+    {
+        g_vecSqliteConnections.back()->Destroy();
+    }
+
     mysql_library_end();
 
     delete serverModule;
