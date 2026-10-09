@@ -85,6 +85,7 @@ CMySQLQuery *TMySQLTransactOp::DoQuery(const char *query)
         res = mysql_store_result(pDatabase);
         if (!res)
         {
+            V_snprintf(m_szError, sizeof m_szError, "MySQL query error: %s\n", mysql_error(pDatabase));
             return NULL;
         }
     }
