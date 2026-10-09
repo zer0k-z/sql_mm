@@ -39,10 +39,13 @@ void TMySQLQueryOp::RunThreadPart()
         return;
     }
 
+    MYSQL_RES *res = NULL;
     if (mysql_field_count(pDatabase))
     {
-        m_res = mysql_store_result(pDatabase);
+        res = mysql_store_result(pDatabase);
     }
+
+    m_pQuery = new CMySQLQuery(m_pCon, res);
 }
 
 void TMySQLQueryOp::RunThinkPart()
@@ -53,12 +56,13 @@ void TMySQLQueryOp::RunThinkPart()
         return;
     }
 
-    m_pQuery = new CMySQLQuery(m_pCon, m_res);
     m_callback(m_pQuery);
 }
 
 void TMySQLQueryOp::CancelThinkPart()
 {
+    delete m_pQuery;
+    m_pQuery = nullptr;
     mysql_close(m_pCon->GetDatabase());
     m_pCon->SetDatabase(nullptr);
 }

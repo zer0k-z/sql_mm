@@ -38,7 +38,6 @@ private:
     MySQLConnection *m_pCon;
     std::string m_szQuery;
     QueryCallbackFunc m_callback;
-    MYSQL_RES *m_res = nullptr;
     CMySQLQuery *m_pQuery = nullptr;
     char m_szError[255] {};
 };
