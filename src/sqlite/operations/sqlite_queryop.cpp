@@ -26,6 +26,8 @@ void TSQLiteQueryOp::RunThreadPart()
 
 void TSQLiteQueryOp::CancelThinkPart()
 {
+    delete m_pQuery;
+    m_pQuery = nullptr;
     sqlite3_close(m_pCon->GetDatabase());
     m_pCon->SetDatabase(nullptr);
 }

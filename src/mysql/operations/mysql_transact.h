@@ -25,6 +25,7 @@ private:
     char m_szError[255] {};
     int m_failIndex = -1;
 
+    void FreeQueries();
     bool DoSimpleQuery(const char *query);
     CMySQLQuery *DoQuery(const char *query);
 };

@@ -5,9 +5,14 @@
 
 TMySQLTransactOp::~TMySQLTransactOp()
 {
+    FreeQueries();
+}
+
+void TMySQLTransactOp::FreeQueries()
+{
     for (auto query : m_pQueries)
     {
-        delete query;
+        delete static_cast<CMySQLQuery *>(query);
     }
     m_pQueries.clear();
 }
@@ -38,6 +43,7 @@ void TMySQLTransactOp::RunThreadPart()
 
 void TMySQLTransactOp::CancelThinkPart()
 {
+    FreeQueries();
     mysql_close(m_pCon->GetDatabase());
     m_pCon->SetDatabase(nullptr);
 }

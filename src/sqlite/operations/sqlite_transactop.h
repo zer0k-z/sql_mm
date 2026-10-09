@@ -29,6 +29,7 @@ private:
     TransactionFailureCallbackFunc m_failureCallback;
     std::vector<ISQLQuery *> m_pQueries;
 
+    void FreeQueries();
     bool DoSimpleQuery(const char *query);
     SqQuery *DoQuery(const char *query);
 };

@@ -5,9 +5,14 @@
 
 TSQLiteTransactOp::~TSQLiteTransactOp()
 {
+    FreeQueries();
+}
+
+void TSQLiteTransactOp::FreeQueries()
+{
     for (auto query : m_pQueries)
     {
-        delete query;
+        delete static_cast<SqQuery *>(query);
     }
     m_pQueries.clear();
 }
@@ -38,6 +43,7 @@ void TSQLiteTransactOp::RunThreadPart()
 
 void TSQLiteTransactOp::CancelThinkPart()
 {
+    FreeQueries();
     sqlite3_close(m_pCon->GetDatabase());
     m_pCon->SetDatabase(nullptr);
 }
