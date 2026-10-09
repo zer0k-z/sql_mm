@@ -95,6 +95,12 @@ void SqConnection::Query(const char *query, QueryCallbackFunc callback, ...)
 
 void SqConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
 {
+    if (!m_pDatabase)
+    {
+        Warning("Failed executing a transaction on the database at %s.\n", info.database);
+        return;
+    }
+
     TSQLiteTransactOp *op = new TSQLiteTransactOp(this, txn, success, failure);
     AddToThreadQueue(op);
 }

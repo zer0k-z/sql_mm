@@ -113,6 +113,12 @@ void MySQLConnection::Query(const char *query, QueryCallbackFunc callback, ...)
 
 void MySQLConnection::ExecuteTransaction(Transaction txn, TransactionSuccessCallbackFunc success, TransactionFailureCallbackFunc failure)
 {
+    if (!m_pDatabase)
+    {
+        Warning("Failed executing a transaction on a disconnected database (%s).\n", m_info.host);
+        return;
+    }
+
     TMySQLTransactOp *op = new TMySQLTransactOp(this, txn, success, failure);
     AddToThreadQueue(op);
 }
