@@ -44,7 +44,7 @@ void TSQLiteTransactOp::RunThreadPart()
 void TSQLiteTransactOp::CancelThinkPart()
 {
     FreeQueries();
-    sqlite3_close(m_pCon->GetDatabase());
+    sqlite3_close_v2(m_pCon->GetDatabase());
     m_pCon->SetDatabase(nullptr);
 }
 

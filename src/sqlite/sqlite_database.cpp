@@ -44,7 +44,7 @@ SqConnection::~SqConnection()
 
     if (m_pDatabase)
     {
-        sqlite3_close(m_pDatabase);
+        sqlite3_close_v2(m_pDatabase);
     }
     delete this->info.database;
 }

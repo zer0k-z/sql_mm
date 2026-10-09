@@ -49,7 +49,7 @@ void TSQLiteConnectOp::RunThreadPart()
 
 void TSQLiteConnectOp::CancelThinkPart()
 {
-    sqlite3_close(m_pDatabase);
+    sqlite3_close_v2(m_pDatabase);
     m_pCon->SetDatabase(nullptr);
 }
 
