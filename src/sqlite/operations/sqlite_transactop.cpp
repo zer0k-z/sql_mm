@@ -53,7 +53,6 @@ void TSQLiteTransactOp::RunThinkPart()
     if (!m_szError[0])
     {
         m_successCallback(m_pQueries);
-        m_pQueries.clear();
         return;
     }
     META_CONPRINTF("TSQLiteTransactOp ERROR: %s\n", m_szError);
