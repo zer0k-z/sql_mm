@@ -58,9 +58,9 @@ private:
     bool m_Terminate = false;
     bool m_bDestroyed = false;
 
-    sqlite3 *m_pDatabase;
+    sqlite3 *m_pDatabase = nullptr;
     std::string m_LastError;
-    int m_LastErrorCode;
+    int m_LastErrorCode = 0;
 };
 
 inline bool IsPathSepChar(char c)
