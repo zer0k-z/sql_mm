@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <deque>
 #include "mysql_database.h"
 #include "public/mysql_mm.h"
 
@@ -78,6 +79,7 @@ public:
 private:
     MySQLConnection *m_pDatabase;
     CMySQLResult m_res;
+    std::deque<MYSQL_RES *> m_pendingResults;
     unsigned int m_insertId;
     unsigned int m_affectedRows;
 };

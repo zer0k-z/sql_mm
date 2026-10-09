@@ -219,6 +219,12 @@ CMySQLQuery::CMySQLQuery(MySQLConnection *db, MYSQL_RES *res) : m_pDatabase(db),
 {
     m_insertId = m_pDatabase->GetInsertID();
     m_affectedRows = m_pDatabase->GetAffectedRows();
+
+    auto pDatabase = m_pDatabase->GetDatabase();
+    while (mysql_more_results(pDatabase) && mysql_next_result(pDatabase) == 0)
+    {
+        m_pendingResults.push_back(mysql_store_result(pDatabase));
+    }
 }
 
 ISQLResult *CMySQLQuery::GetResultSet()
@@ -233,25 +239,18 @@ ISQLResult *CMySQLQuery::GetResultSet()
 
 bool CMySQLQuery::FetchMoreResults()
 {
-    auto pDatabase = m_pDatabase->GetDatabase();
     if (m_res.m_pRes == NULL)
     {
         return false;
     }
-    else if (!mysql_more_results(pDatabase))
+    else if (m_pendingResults.empty())
     {
         return false;
     }
 
     mysql_free_result(m_res.m_pRes);
-    m_res.m_pRes = NULL;
-
-    if (mysql_next_result(pDatabase) != 0)
-    {
-        return false;
-    }
-
-    m_res.m_pRes = mysql_store_result(pDatabase);
+    m_res.m_pRes = m_pendingResults.front();
+    m_pendingResults.pop_front();
     m_res.Update();
 
     return (m_res.m_pRes != NULL);
@@ -259,15 +258,17 @@ bool CMySQLQuery::FetchMoreResults()
 
 CMySQLQuery::~CMySQLQuery()
 {
-    while (FetchMoreResults())
-    {
-        /* Spin until all are gone */
-    }
-
-    /* Free the last, if any */
     if (m_res.m_pRes != NULL)
     {
         mysql_free_result(m_res.m_pRes);
+    }
+
+    for (auto res : m_pendingResults)
+    {
+        if (res != NULL)
+        {
+            mysql_free_result(res);
+        }
     }
 }
 
