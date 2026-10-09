@@ -115,26 +115,24 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
     else if (field->type == SQLITE_INTEGER)
     {
         char number[24];
-        field->size = UTIL_Format(number, sizeof(number), "%lld", field->u.idx);
-        field->type = SQLITE_TEXT;
-        field->u.idx = m_Strings.AddString(number);
+        size_t size = UTIL_Format(number, sizeof(number), "%lld", field->u.idx);
+        m_NumberStrings.emplace_back(number, size);
         if (length)
         {
-            *length = field->size;
+            *length = size;
         }
-        return m_Strings.GetString(field->u.idx);
+        return m_NumberStrings.back().c_str();
     }
     else if (field->type == SQLITE_FLOAT)
     {
         char number[24];
-        field->size = UTIL_Format(number, sizeof(number), "%llf", field->u.d);
-        field->type = SQLITE_TEXT;
-        field->u.idx = m_Strings.AddString(number);
+        size_t size = UTIL_Format(number, sizeof(number), "%llf", field->u.d);
+        m_NumberStrings.emplace_back(number, size);
         if (length)
         {
-            *length = field->size;
+            *length = size;
         }
-        return m_Strings.GetString(field->u.idx);
+        return m_NumberStrings.back().c_str();
     }
     return nullptr;
 }
@@ -274,6 +272,7 @@ void SqResults::ResetResultCount()
     m_CurRow = -1;
     m_NextRow = 0;
     m_pMemory->Reset();
+    m_NumberStrings.clear();
 }
 
 void SqResults::PushResult()

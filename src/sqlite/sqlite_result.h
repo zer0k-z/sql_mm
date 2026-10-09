@@ -1,5 +1,7 @@
 #pragma once
 
+#include <deque>
+#include <string>
 #include "sqlite_database.h"
 #include "public/sqlite_mm.h"
 #include "common/memtable.h"
@@ -68,4 +70,5 @@ private:
     SqField *m_Rows;
     int m_CurRow;
     int m_NextRow;
+    std::deque<std::string> m_NumberStrings;
 };
