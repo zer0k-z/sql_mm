@@ -30,9 +30,23 @@
 extern std::vector<MySQLConnection *> g_vecMysqlConnections;
 extern bool g_bInFrame;
 
+static const char *CopyString(std::string &dest, const char *src)
+{
+    if (!src)
+    {
+        return nullptr;
+    }
+    dest = src;
+    return dest.c_str();
+}
+
 MySQLConnection::MySQLConnection(const MySQLConnectionInfo info)
 {
     this->m_info = info;
+    m_info.host = CopyString(m_host, info.host);
+    m_info.user = CopyString(m_user, info.user);
+    m_info.pass = CopyString(m_pass, info.pass);
+    m_info.database = CopyString(m_database, info.database);
 }
 
 MySQLConnection::~MySQLConnection()

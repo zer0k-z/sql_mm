@@ -27,6 +27,7 @@
 #endif
 
 #include <queue>
+#include <string>
 #include <thread>
 #include <condition_variable>
 #include <functional>
@@ -82,4 +83,9 @@ private:
     bool m_Terminate = false;
     bool m_bDestroyed = false;
     MYSQL *m_pDatabase = nullptr;
+
+    std::string m_host;
+    std::string m_user;
+    std::string m_pass;
+    std::string m_database;
 };
