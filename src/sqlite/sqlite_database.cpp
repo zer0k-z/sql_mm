@@ -46,7 +46,7 @@ SqConnection::~SqConnection()
     {
         sqlite3_close_v2(m_pDatabase);
     }
-    delete this->info.database;
+    delete[] this->info.database;
 }
 
 void SqConnection::Connect(ConnectCallbackFunc callback)
