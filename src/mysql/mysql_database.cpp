@@ -162,7 +162,7 @@ void MySQLConnection::ThreadRun()
         {
             if (m_Terminate)
             {
-                return;
+                break;
             }
 
             m_QueueEvent.wait(lock);
