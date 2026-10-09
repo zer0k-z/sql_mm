@@ -126,7 +126,7 @@ const char *SqResults::GetString(unsigned int columnId, size_t *length)
     else if (field->type == SQLITE_FLOAT)
     {
         char number[24];
-        size_t size = UTIL_Format(number, sizeof(number), "%llf", field->u.d);
+        size_t size = UTIL_Format(number, sizeof(number), "%f", field->u.d);
         m_NumberStrings.emplace_back(number, size);
         if (length)
         {
