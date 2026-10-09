@@ -302,7 +302,7 @@ void SqResults::PushResult()
         }
         else if (row[i].type == SQLITE_FLOAT)
         {
-            row[i].u.d = (float)sqlite3_column_double(m_pStmt, i);
+            row[i].u.d = sqlite3_column_double(m_pStmt, i);
             row[i].size = sizeof(double);
         }
         else if (row[i].type == SQLITE_BLOB)
