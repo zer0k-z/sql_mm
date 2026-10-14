@@ -1,6 +1,6 @@
 #include "mysql_transact.h"
 #include "tier0/dbg.h"
-#include "tier1/strtools.h"
+#include "tier0/tier0_strtools.h"
 #include "sql_mm.h"
 
 TMySQLTransactOp::~TMySQLTransactOp()

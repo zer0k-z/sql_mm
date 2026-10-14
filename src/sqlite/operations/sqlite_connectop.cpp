@@ -1,7 +1,7 @@
 #include "sqlite_connectop.h"
 #include "sql_mm.h"
-#include "filesystem.h"
-#include "bufferstring.h"
+#include "filesystem/ifilesystem.h"
+#include "tier0/buffer_string.h"
 
 int busy_handler(void *unused1, int unused2)
 {

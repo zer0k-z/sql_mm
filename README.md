@@ -41,6 +41,7 @@ Interface definition can be found in `src/public`.
 - [Metamod:Source](https://www.sourcemm.net/downloads.php/?branch=master) 2.0.0.1462 or higher, which uses
   [KHook](https://github.com/Kenzzer/KHook) instead of SourceHook. Clone it with `--recursive`; KHook is a submodule
   of it and its headers are needed to build.
+- [s2sdk](https://github.com/alliedmodders/s2sdk), `cs2` branch. The `cs2` branch of hl2sdk is no longer maintained.
 - [AMBuild](https://wiki.alliedmods.net/Ambuild)
 - On Linux, the `default-libmysqlclient-dev` and `lld` packages.
 

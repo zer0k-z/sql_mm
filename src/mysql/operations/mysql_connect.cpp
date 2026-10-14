@@ -21,7 +21,7 @@
 
 #include "mysql_connect.h"
 #include "tier0/dbg.h"
-#include "tier1/strtools.h"
+#include "tier0/tier0_strtools.h"
 
 void TMySQLConnectOp::RunThreadPart()
 {

@@ -39,8 +39,8 @@ jobs:
       - name: Clone Metamod:Source
         run: git clone --depth 1 --recursive https://github.com/alliedmodders/metamod-source ../metamod-source
 
-      - name: Clone HL2SDK (cs2)
-        run: git clone --depth 1 --branch cs2 https://github.com/alliedmodders/hl2sdk ../hl2sdk-cs2
+      - name: Clone S2SDK (cs2)
+        run: git clone --depth 1 --branch cs2 https://github.com/alliedmodders/s2sdk ../hl2sdk-cs2
 
       - name: Install AMBuild
         run: |
@@ -80,8 +80,8 @@ jobs:
       - name: Clone Metamod:Source
         run: git clone --depth 1 --recursive https://github.com/alliedmodders/metamod-source ../metamod-source
 
-      - name: Clone HL2SDK (cs2)
-        run: git clone --depth 1 --branch cs2 https://github.com/alliedmodders/hl2sdk ../hl2sdk-cs2
+      - name: Clone S2SDK (cs2)
+        run: git clone --depth 1 --branch cs2 https://github.com/alliedmodders/s2sdk ../hl2sdk-cs2
 
       - name: Install AMBuild
         run: |

@@ -8,7 +8,10 @@
 #endif
 
 #include "sql_mm.h"
-#include "iserver.h"
+#include "engine2/isource2server.h"
+#include "engine2/ivengineserver2.h"
+#include "engine2/networkgameserverbase.h"
+#include "engine2/inetworkserverservice.h"
 
 #include "common/interface.h"
 
@@ -45,7 +48,7 @@ bool g_bInFrame = false;
 // otherwise that'll be nullptr!
 CGlobalVars *GetGameGlobals()
 {
-    INetworkGameServer *server = g_pNetworkServerService->GetIGameServer();
+    CNetworkGameServerBase *server = g_pNetworkServerService->GetIGameServer();
 
     if (!server)
     {
